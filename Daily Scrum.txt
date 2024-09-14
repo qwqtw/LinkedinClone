@@ -1,5 +1,13 @@
-Qiutian Wang--
-
+2024/09/13 Qiutian
+1. Done since last scrum 
+-project proposal first draft
+-join github repo and trello board
+- add todos on trello board 
+2. Plan until next Scrum 
+- finalize project proposal for submission 
+- set up database on AWS S3
+3. Need assistance / figure things out 
+- not yet
 
 
 
