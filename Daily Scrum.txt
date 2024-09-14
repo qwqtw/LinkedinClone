@@ -11,7 +11,16 @@
 
 
 
-Kejia Li--
+2024/09/13 Kejia
+1. Done since last proposal
+- make mockup
+- give advice on project proposal
+- join github repo and trello board
+- add todos on trello board 
+2. Plan until next Scrum 
+- start by spring initialize and create Entity
+3. Need assistance / figure things out 
+- learn more about Heroku and CSS Script
 
 
 
