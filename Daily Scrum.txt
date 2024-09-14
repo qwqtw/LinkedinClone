@@ -27,3 +27,9 @@
 Tao Wang--
 create the Github repositories
 create the Trello work board
+
+Plan until next Scrum
+Setup the database on AWS and make sure every teamer could asscss it
+
+Need Assistance
+not yet, will keep upload
