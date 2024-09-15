@@ -10,7 +10,6 @@
 - not yet
 
 
-
 2024/09/13 Kejia
 1. Done since last proposal
 - make mockup
@@ -33,3 +32,17 @@ Setup the database on AWS and make sure every teamer could asscss it
 
 Need Assistance
 not yet, will keep upload
+
+---------------------------------------------------------------------------
+
+2024/09/15  Kejia
+1.Done since last proposal
+- apply Heroku GitHub Student Developer Pack
+- learn from Youtube and try some functions on Heroku (create app, add-on etc.)  
+- generate the package by spring initializr
+2. Plan until next Scrum 
+- discuss with teammates about tables (edu/work experience=text/json?)
+- create Entity
+- create a new app using the student account on Heroku
+3. Need assistance / figure things out 
+- learn more about Heroku
