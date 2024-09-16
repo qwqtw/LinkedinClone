@@ -76,3 +76,12 @@ not yet, will keep upload
 3. Need assistance / figure things out 
 - learn how to use Bootstrap’s JavaScript modal plugin to add dialogs
 
+2024/09/16 Qiutian
+1. Done since last scrum 
+-project proposal 
+-set up database
+-heruko set up
+2. Plan until next Scrum 
+- start the backbone of the project and tasks division
+3. Need assistance / figure things out 
+- need assistance for heruko free option set u
