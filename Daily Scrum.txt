@@ -65,3 +65,14 @@ not yet, will keep upload
 -begin to create the foundation elements of application
 3 Need assistance
 - have the same problem with teams on heroku
+
+-----------------------------------------------------------------------------------
+2024/09/16 Kejia
+1.Done since last proposal
+- discuss with teammates about the pages (register/jobs/network)
+- split the work
+2. Plan until next Scrum 
+- finish login/register/jobs
+3. Need assistance / figure things out 
+- learn how to use Bootstrap’s JavaScript modal plugin to add dialogs
+
