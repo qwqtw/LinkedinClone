@@ -46,3 +46,22 @@ not yet, will keep upload
 - create a new app using the student account on Heroku
 3. Need assistance / figure things out 
 - learn more about Heroku
+
+2024/09/15 Qiutian
+1. Done since last scrum 
+-project proposal 
+-set up database
+2. Plan until next Scrum 
+- start the backbone of the project and tasks division
+3. Need assistance / figure things out 
+- need assistance for heruko free option set up
+
+2024/09/15 Tao Wang
+1 Done since last scrum
+-apply the student account on heroku and aws
+-setup the AWS RDS 
+2 Plan until next scrum
+-try to have the MySql run on RDS and figer out how to get access for team
+-begin to create the foundation elements of application
+3 Need assistance
+- have the same problem with teams on heroku
