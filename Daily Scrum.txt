@@ -36,7 +36,7 @@ not yet, will keep upload
 ---------------------------------------------------------------------------
 
 2024/09/15  Kejia
-1.Done since last proposal
+1.Done since last scrum
 - apply Heroku GitHub Student Developer Pack
 - learn from Youtube and try some functions on Heroku (create app, add-on etc.)  
 - generate the package by spring initializr
@@ -77,9 +77,7 @@ not yet, will keep upload
 - learn how to use Bootstrap’s JavaScript modal plugin to add dialogs
 
 2024/09/16 Qiutian
-1. Done since last scrum 
--project proposal 
--set up database
+1. Done since last scrum
 -heruko set up
 -tasks division
 2. Plan until next Scrum 
