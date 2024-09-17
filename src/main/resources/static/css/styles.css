@@ -1,0 +1,60 @@
+/* static/css/styles.css */
+/* Styling for the search bar */
+.search-container {
+    position: relative;
+    max-width: 300px; /* Adjust the width to a reasonable size */
+    margin-right: auto; /* Ensures alignment to the left */
+}
+
+/* Search input */
+.search-container input[type="search"] {
+    width: 300px;
+    padding-left: 40px; /* Make space for the icon */
+    height: 40px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    pointer-events: none;
+    font-size: 1.5rem;
+    color: #888;
+}
+
+.search-container input[type="search"] {
+    padding-left: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+/* Remove blue outline on input focus */
+.search-container input:focus {
+    outline: none;
+    box-shadow: none;
+    border-color: #ccc;
+}
+
+/* Additional styling for the navbar */
+.navbar-nav .nav-link {
+    font-size: 0.85rem;
+    text-align: center;
+}
+
+.navbar-nav .nav-link i {
+    display: block;
+}
+
+/* Hide the default Bootstrap dropdown arrow */
+.navbar .dropdown-toggle::after {
+    display: none;
+}
