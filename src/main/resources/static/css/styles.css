@@ -1,14 +1,30 @@
-/* static/css/styles.css */
-/* Styling for the search bar */
+/* Navbar Styles */
+.navbar {
+    padding: 0 300px;
+}
+
+/* Left-aligned Logo */
+.navbar-brand {
+    margin-right: 20px;
+}
+
+/* Toggler for mobile view */
+.navbar-toggler {
+    margin-right: 20px;
+}
+
+/* Search Bar Styles */
 .search-container {
     position: relative;
     max-width: 300px; /* Adjust the width to a reasonable size */
     margin-right: auto; /* Ensures alignment to the left */
+    display: flex;
+    align-items: center;
 }
 
-/* Search input */
+/* Search Input */
 .search-container input[type="search"] {
-    width: 300px;
+    width: 300px; /* Full width of the container */
     padding-left: 40px; /* Make space for the icon */
     height: 40px;
     border: 1px solid #ccc;
@@ -16,26 +32,17 @@
     font-size: 14px;
 }
 
-.search-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
+/* Search Icon */
 .search-icon {
     position: absolute;
     left: 10px;
-    pointer-events: none;
     font-size: 1.5rem;
     color: #888;
+    top: 50%; /* Vertically center */
+    transform: translateY(-50%); /* Correct centering */
+    pointer-events: none;
 }
 
-.search-container input[type="search"] {
-    padding-left: 40px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    font-size: 1rem;
-}
 
 /* Remove blue outline on input focus */
 .search-container input:focus {
@@ -44,7 +51,11 @@
     border-color: #ccc;
 }
 
-/* Additional styling for the navbar */
+/* Right-aligned Navigation Links */
+.navbar-nav .nav-item {
+    margin-right: 30px;
+}
+
 .navbar-nav .nav-link {
     font-size: 0.85rem;
     text-align: center;

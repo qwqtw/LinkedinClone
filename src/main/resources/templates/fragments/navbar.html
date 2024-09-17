@@ -1,66 +1,69 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <link rel="stylesheet" href="/static/css/styles.css">
+</head>
 <body>
 <nav th:fragment="navbar">
-<nav class="navbar navbar-expand-lg navbar-light bg-light" style="padding: 0 300px;">
-  <!-- Left-aligned Logo -->
-  <a class="navbar-brand" href="/" style="margin-right: 20px;">
-    <img src="/images/logo.png" width="50" height="50" alt="LinkedIn Logo">
-  </a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- Left-aligned Logo -->
+    <a class="navbar-brand" href="/">
+      <img src="/images/logo.png" width="50" height="50" alt="LinkedIn Logo">
+    </a>
 
-  <!-- Toggler for mobile view -->
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
+    <!-- Toggler for mobile view -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
 
-  <div class="collapse navbar-collapse" id="navbarNav">
-    <!-- Left-aligned Search Bar with Magnifier Icon inside -->
-    <form class="search-container">
-      <i class="material-symbols-outlined search-icon">search</i> <!-- Magnifier icon -->
-      <input type="search" placeholder="Search" aria-label="Search">
-    </form>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Left-aligned Search Bar with Magnifier Icon inside -->
+      <form class="search-container">
+        <i class="material-symbols-outlined search-icon">search</i> <!-- Magnifier icon -->
+        <input type="search" placeholder="Search" aria-label="Search">
+      </form>
 
-    <!-- Right-aligned Navigation Links -->
-    <ul class="navbar-nav ml-auto d-flex align-items-center">
-      <!-- Home -->
-      <li class="nav-item" style="margin-right: 20px;">
-        <a class="nav-link" href="/" style="font-size: 0.85rem;">
-          <i class="material-symbols-outlined">home</i>Home
-        </a>
-      </li>
-      <!-- Network -->
-      <li class="nav-item" style="margin-right: 20px;">
-        <a class="nav-link" href="/network" style="font-size: 0.85rem;">
-          <i class="material-symbols-outlined">diversity_3</i>My Network
-        </a>
-      </li>
-      <!-- Jobs -->
-      <li class="nav-item" style="margin-right: 20px;">
-        <a class="nav-link" href="/jobs" style="font-size: 0.85rem;">
-          <i class="material-symbols-outlined">work</i>Jobs
-        </a>
-      </li>
-      <!-- Profile (Dropdown) -->
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle d-flex flex-column align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <!-- Profile Image -->
-          <img src="/images/avatar.jpg" width="30" height="30" class="rounded-circle" alt="My Avatar">
-          <!-- "Me" and Dropdown Arrow on the same line -->
-          <div class="d-flex align-items-center">
-            <span>Me</span>
-            <i class="material-symbols-outlined">arrow_drop_down</i>
+      <!-- Right-aligned Navigation Links -->
+      <ul class="navbar-nav ml-auto d-flex align-items-center">
+        <!-- Home -->
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="material-symbols-outlined">home</i>Home
+          </a>
+        </li>
+        <!-- Network -->
+        <li class="nav-item">
+          <a class="nav-link" href="/network">
+            <i class="material-symbols-outlined">diversity_3</i>My Network
+          </a>
+        </li>
+        <!-- Jobs -->
+        <li class="nav-item">
+          <a class="nav-link" href="/jobs">
+            <i class="material-symbols-outlined">work</i>Jobs
+          </a>
+        </li>
+        <!-- Profile (Dropdown) -->
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex flex-column align-items-center" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <!-- Profile Image -->
+            <img src="/images/avatar.jpg" width="30" height="30" class="rounded-circle" alt="My Avatar">
+            <!-- "Me" and Dropdown Arrow on the same line -->
+            <div class="d-flex align-items-center">
+              <span>Me</span>
+              <i class="material-symbols-outlined">arrow_drop_down</i>
+            </div>
+          </a>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+            <a class="dropdown-item" href="/profile">My Profile</a>
+            <a class="dropdown-item" href="/settings">Settings</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="/logout">Logout</a>
           </div>
-        </a>
-        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/profile">My Profile</a>
-          <a class="dropdown-item" href="/settings">Settings</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/logout">Logout</a>
-        </div>
-      </li>
-    </ul>
-  </div>
-</nav>
+        </li>
+      </ul>
+    </div>
+  </nav>
 </nav>
 </body>
 </html>
