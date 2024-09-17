@@ -85,3 +85,14 @@ not yet, will keep upload
 - try to finish the header
 3. Need assistance / figure things out 
 - not yet
+
+2024/09/16 Tao Wang
+1 Done since last scrum
+-heroku account setup
+-tasks division
+2 Plan until next scrum
+-learn how to use the heroku and try to run the applicaion on Heroku
+-begin to create the foundation elements of application
+-
+3 Need assistance
+- not yet
