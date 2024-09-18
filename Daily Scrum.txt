@@ -124,3 +124,11 @@ not yet, will keep upload
 -
 3 Need assistance
 - not yet
+-----------------------------------------------------------------------------------
+2024/09/18 Qiutian
+1. Done since last scrum
+- nav bar and part of home page (post writing)
+2. Plan until next Scrum
+- try to finish the home page
+3. Need assistance / figure things out
+- not yet
