@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
-<head th:replace="fragments/head :: head(title='Index')"></head>
+<head th:replace="fragments/head :: head(title='Home')"></head>
 
 <body>
 <!-- Include the navbar -->
@@ -13,7 +13,7 @@
             <div class="card">
                 <img src="/images/avatar.jpg" class="card-img-top rounded-circle mx-auto d-block mt-3" style="width: 100px;" alt="Profile Avatar">
                 <div class="card-body text-center">
-                    <h5 class="card-title">Your Name</h5>
+                    <a href="#"> <h5 class="card-title">Your Name</h5> </a>
                     <p class="card-text">
                         Your basic information (e.g., job title, location)
                     </p>

@@ -64,6 +64,9 @@
 .navbar-nav .nav-link i {
     display: block;
 }
+.nav-link.active {
+    border-bottom: 2px solid black;
+}
 
 /* Hide the default Bootstrap dropdown arrow */
 .navbar .dropdown-toggle::after {
