@@ -7,7 +7,7 @@
 <nav th:fragment="navbar">
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <!-- Left-aligned Logo -->
-    <a class="navbar-brand" href="/">
+    <a class="navbar-brand" href="/home" th:classappend="${currentURI == '/home'} ? 'active'">
       <img src="/images/logo.png" width="50" height="50" alt="LinkedIn Logo">
     </a>
 
