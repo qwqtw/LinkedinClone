@@ -113,3 +113,14 @@ not yet, will keep upload
 - try to finish /register security part
 3. Need assistance / figure things out
 - security part
+
+2024/09/17 Tao Wang
+1 Done since last scrum
+-profile and connection page setup
+-html page done, but not test yet 
+2 Plan until next scrum
+-keep updating the page elements and functions
+-learning the Angular.js
+-
+3 Need assistance
+- not yet
