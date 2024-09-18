@@ -104,3 +104,12 @@ not yet, will keep upload
 - try to finish nav bar and start working on the home page
 3. Need assistance / figure things out
 - not yet
+
+2024/09/17 Kejia
+1. Done since last scrum
+- login/register.html
+- part of /register (entity, controller, service, repository)
+2. Plan until next Scrum
+- try to finish /register security part
+3. Need assistance / figure things out
+- security part
