@@ -1,3 +1,89 @@
+/* styles.css */
+body {
+    background-color: #f3f2f2;
+}
+/* Ensure Material Icons are aligned with text */
+.material-symbols-outlined {
+    vertical-align: middle; /* Align icons with the middle of the text */
+    margin: 0 5px; /* Set horizontal margin for spacing */
+    font-size: 1.5rem; /* Adjust font size to match text size */
+    line-height: 1; /* Ensure line height is consistent */
+}
+
+
+.navbar {
+    background-color: #ffffff;
+    border-bottom: 1px solid #dcdcdc;
+}
+
+.card {
+    border-radius: 0.5rem;
+    border: 1px solid #e1e9ee;
+}
+
+.card-text {
+    font-size: 0.875rem;
+    color: #333333;
+}
+
+.btn-light {
+    background-color: #f8f9fa;
+    border-color: #e1e9ee;
+    color: #333;
+}
+
+.btn-primary {
+    background-color: #0073b1;
+    border-color: #0073b1;
+}
+
+/* Post Writing Section */
+#editor-container {
+    border: 1px solid #e1e9ee;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    background-color: #ffffff; /* Ensure background is white */
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    background-color: #0073b1;
+    border-color: #0073b1;
+    font-size: 0.875rem; /* Adjust size if needed */
+}
+
+.btn-primary:hover {
+    background-color: #005582;
+    border-color: #005582;
+}
+
+
+/* Modal */
+.modal-content {
+    border-radius: 0.5rem;
+}
+
+.modal-header {
+    border-bottom: 1px solid #e1e9ee;
+}
+
+.modal-footer {
+    border-top: 1px solid #e1e9ee;
+}
+
+.btn-close {
+    background: none;
+    border: none;
+}
+
 /* Navbar Styles */
 .navbar {
     padding: 0 20%;
@@ -69,6 +155,6 @@
 }
 
 /* Hide the default Bootstrap dropdown arrow */
-.navbar .dropdown-toggle::after {
+.dropdown-toggle::after {
     display: none;
 }
