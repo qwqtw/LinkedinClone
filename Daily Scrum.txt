@@ -140,3 +140,11 @@ not yet, will keep upload
 - try to finish /register security part
 3. Need assistance / figure things out
 - security part
+
+2024/09/18 Tao Wang
+1. Done since last scrum
+- heroku setup finished and deploy 
+2. Plan until next Scrum
+- need to test the app on heroku and connect to database on AWS RDS
+3. Need assistance / figure things out
+- heroku keep showing the page error, even deploy already successful
