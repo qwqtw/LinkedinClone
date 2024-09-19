@@ -37,19 +37,22 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/index", "/register", "/process_register","/articleadd", "/article/**", "/home").permitAll()
+                        .requestMatchers("/", "/index", "/register", "/home", "/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
                         .anyRequest().authenticated()
                 )
                 .formLogin(login -> login
-                        .loginPage("/login")  // Add this line
+                        .loginPage("/login")
                         .usernameParameter("username")
-                        .defaultSuccessUrl("/")
+                        .defaultSuccessUrl("/home", true) // Redirect to home after login
                         .permitAll()
                 )
-
-                .logout(logout -> logout.logoutSuccessUrl("/").permitAll()
+                .logout(logout -> logout
+                        .logoutSuccessUrl("/login")
+                        .permitAll()
                 );
+
         return http.build();
     }
+
 
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="fragments/head :: head('Login')"></head>
+<head th:insert="~{fragments/head :: head('Login')}">
 <body class="d-flex align-items-center justify-content-center">
 <div class="container my-5">
     <form th:action="@{/login}" method="post" class="form col-3 mx-auto">
