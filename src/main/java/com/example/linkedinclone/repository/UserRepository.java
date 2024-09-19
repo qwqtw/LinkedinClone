@@ -4,7 +4,6 @@ import com.example.linkedinclone.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@SpringBootApplication(scanBasePackages = {"com.example.linkedinclone"})
 @Repository
 public interface UserRepository  extends JpaRepository<User, Long> {
     User findByUsername(String username);
