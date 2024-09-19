@@ -132,3 +132,11 @@ not yet, will keep upload
 - try to finish the home page
 3. Need assistance / figure things out
 - not yet
+
+2024/09/18 Kejia
+1. Done since last scrum
+- part of /register (entity, controller, service, repository)
+2. Plan until next Scrum
+- try to finish /register security part
+3. Need assistance / figure things out
+- security part
