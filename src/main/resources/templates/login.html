@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container">
+    <form th:action="@{/login}" method="post">
+        <h2 class="text-center mb-3">Login</h2>
+        <div class="mb-3">
+            <label for="email">Email</label><br>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="mb-5">
+            <label for="password">Password</label><br>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit">Login</button><br>
+        <div>
+            <p>Don't have an account? <a th:href="@{/register}">Register here</a></p>
+        </div>
+    </form>
+</div>
+</body>
+</html>
