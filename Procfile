@@ -1,1 +1,1 @@
-web: java -jar target/linkedinclone-0.0.1-SNAPSHOT.jar
+web: java -jar target/LinkedinClone-0.0.1-SNAPSHOT.jar
