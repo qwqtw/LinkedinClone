@@ -35,11 +35,19 @@
             <input id="password2" class="form-control" type="password" th:field="*{password2}">
             <div class="alert alert-warning" th:if="${#fields.hasErrors('password2')}" th:errors="*{password2}"></div>
         </div>
-
+        <div class="mb-5">
+            <label for="role">Choose your role</label><br>
+            <select id="role" th:field="*{role}" required>
+                <option th:value="user">User</option>
+                <option th:value="recruiter">Recruiter</option>
+            </select>
+        </div>
         <div>
             <button type="submit" class="btn btn-primary">Register</button>
         </div>
-
+        <div>
+            <p>Already have an account? <a th:href="@{/login}">Login here</a></p>
+        </div>
     </form>
 </div>
 </body>
