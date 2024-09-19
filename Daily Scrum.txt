@@ -148,3 +148,11 @@ not yet, will keep upload
 - need to test the app on heroku and connect to database on AWS RDS
 3. Need assistance / figure things out
 - heroku keep showing the page error, even deploy already successful
+-----------------------------------------------------------------------------------
+2024/09/19 Qiutian
+1. Done since last scrum
+- most of home page (post, edit post, delete post, UI for post)
+2. Plan until next Scrum
+- finalize all features on home page (like, comment)
+3. Need assistance / figure things out
+- not yet

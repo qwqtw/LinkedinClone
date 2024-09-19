@@ -1,89 +1,85 @@
 package com.example.linkedinclone.controller;
 
-import com.example.linkedinclone.entity.User;
-import com.example.linkedinclone.repository.UserRepository;
-import com.example.linkedinclone.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import com.example.linkedinclone.entity.User ;
+import com.example.linkedinclone.repository.UserRepository ;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 @Slf4j
 @Controller
 public class UserController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepo;
 
-    private final UserRepository userRepository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserController(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        this.userRepository = userRepository;
-        this.passwordEncoder = passwordEncoder;
+    @GetMapping("/login")
+    public String login() {
+        return "login"; // This should match the name of your login template
     }
 
+    @PostMapping("/login")
+    public String login(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes) {
+        User user = userRepo.findByUsername(username);
+
+        if (user != null && new BCryptPasswordEncoder().matches(password, user.getPassword())) {
+            // Authentication successful
+            return "redirect:/home";
+        } else {
+            // Authentication failed, add an error message
+            redirectAttributes.addFlashAttribute("error", "Invalid username or password");
+            return "redirect:/login";
+        }
+    }
+
+
     @GetMapping("/register")
-    public String showRegistrationForm(Model model) {
+    public String viewRegisterPage(Model model) {
         model.addAttribute("user", new User());
         return "register";
     }
 
     @PostMapping("/register")
-    public String registerUser(@Valid User user, BindingResult result, RedirectAttributes redirectAttributes) {
-        // Check email is already in use
-        if (userRepository.findByEmail(user.getEmail()).isPresent()) {
-            log.info("Email is already in use: {}", user.getEmail());
-            result.rejectValue("email", "email.exists", "Email is already in use.");
-        }
-
-        // password should match password2
-        if (!user.getPassword().equals(user.getPassword2())) {
-            result.rejectValue("password", "passwordsDoNotMatch", "Passwords must match");
-            result.rejectValue("password2", "passwordsDoNotMatch", "Passwords must match");
-        }
+    public String processRegister(@Valid User user, BindingResult result) {
 
         if (result.hasErrors()) {
-            log.info("Validation errors found: {}", result);
+            log.debug(String.valueOf(result));
             return "register";
         }
+            if (!user.getPassword().equals(user.getPassword2())) {
+                result.rejectValue("password2", "passwordsDoNotMatch", "Passwords must match");
+                return "register";
+            }
 
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setPassword(encodedPassword);
-        userRepository.save(user);
-        redirectAttributes.addFlashAttribute("message", "Registration successful. Please login.");
-        return "redirect:/login";
-    }
+            if (userRepo.findByUsername(user.getUsername()) != null) {
+                result.rejectValue("username", "usernameExists", "Username already exists");
+                return "register";
+            }
 
-    @GetMapping("/login")
-    public String showLoginForm(Model model) {
-        model.addAttribute("user", new User());
-        return "login";
-    }
+            if (userRepo.findByEmail(user.getEmail()) != null) {
+                result.rejectValue("email", "emailExists", "Email already exists");
+                return "register";
+            }
 
-    // Admin's index page
-    @GetMapping("/admin/index")
-    public String showAdminIndex() {
-        return "admin/index"; // This will look for admin/index.html in the templates directory
-    }
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encodedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encodedPassword);
 
-    // User's index page
-    @GetMapping("/user/index")
-    public String showUserIndex() {
-        return "user/index"; // This will look for user/index.html in the templates directory
-    }
+            userRepo.save(user);
 
-    // Recruiter's index page
-    @GetMapping("/recruiter/index")
-    public String showRecruiterIndex() {
-        return "recruiter/index"; // This will look for recruiter/index.html in the templates directory
-    }
+            return "login";
+        }
+
+
 
 }
