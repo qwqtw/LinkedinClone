@@ -44,6 +44,8 @@ public class User {
 
 
 
+
+
     // The mappedBy attribute tells JPA that the User entity does not own the relationship
     // (it is managed by the author field in the Article entity),
     // so JPA should not create a foreign key column in the User table.

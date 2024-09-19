@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.UUID;
+
 @RestController
 public class PostController {
 
@@ -14,6 +16,7 @@ public class PostController {
 
         // Simulate the post being created (in practice, save to the database)
         Map<String, Object> response = new HashMap<>();
+        response.put("id", UUID.randomUUID().toString());  // Simulate a unique ID for the post
         response.put("name", "Your Name");  // This would come from the logged-in user
         response.put("basicInfo", "Job Title, Location");  // User's basic info
         response.put("avatarUrl", "/images/avatar.jpg");  // User's avatar
@@ -23,3 +26,4 @@ public class PostController {
         return response;
     }
 }
+
