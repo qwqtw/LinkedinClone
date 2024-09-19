@@ -1,7 +1,7 @@
-package Service;
+package com.example.linkedinclone.service;
 
-import Entity.User;
-import Repository.UserRepository;
+import com.example.linkedinclone.entity.User;
+import com.example.linkedinclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

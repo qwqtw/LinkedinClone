@@ -1,4 +1,4 @@
-package Entity;
+package com.example.linkedinclone.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;

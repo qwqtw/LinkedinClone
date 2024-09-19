@@ -1,6 +1,6 @@
-package Repository;
+package com.example.linkedinclone.repository;
 
-import Entity.User;
+import com.example.linkedinclone.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

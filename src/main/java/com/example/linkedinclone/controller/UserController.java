@@ -1,8 +1,8 @@
-package Controller;
+package com.example.linkedinclone.controller;
 
-import Entity.User;
-import Repository.UserRepository;
-import Service.UserService;
+import com.example.linkedinclone.entity.User;
+import com.example.linkedinclone.repository.UserRepository;
+import com.example.linkedinclone.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
