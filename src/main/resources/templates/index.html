@@ -57,16 +57,8 @@
             <!-- Posts Section -->
             <div id="posts-section">
                 <!-- New posts will appear here dynamically -->
-                    <ul>
-                        <li th:each="post : ${posts}">
-                            <div class="card" th:data-id="${post.id}">
-                                <div class="card-body">
-                                    <p th:text="${post.content}">Post content goes here...</p>
-                                </div>
-                            </div>
-                        </li>
-                    </ul>
 
+            </div>
             </div>
         </div>
     </div>
@@ -148,52 +140,70 @@
             .catch(error => console.error('Error:', error));
     });
 
+    // Fetch existing posts on page load
+    window.addEventListener('DOMContentLoaded', (event) => {
+        fetch('/posts')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(post => {
+                    var postElement = createPostElement(post);
+                    document.getElementById('posts-section').appendChild(postElement);
+                });
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    });
+
     // Create post element function
     function createPostElement(post) {
         var postElement = document.createElement('div');
         postElement.classList.add('card', 'mb-3');
         postElement.setAttribute('data-id', post.id);
 
+        // Escape the content for safety
+        var escapedContent = post.content.replace(/`/g, '\\`'); // Escape backticks
+
         postElement.innerHTML = `
-        <div class="card-body">
-            <div class="d-flex align-items-center mb-3">
-                <div class="me-3">
-                    <img src="${post.avatarUrl}" alt="User Image" class="rounded-circle" width="48" height="48">
-                </div>
-                <div>
-                    <h5 class="mb-0">
-                        <a href="#" class="text-dark fw-bold">${post.name}</a>
-                        <span class="text-muted">• You</span>
-                    </h5>
-                    <small class="text-muted">${post.basicInfo}</small><br>
-                    <small class="text-muted">${post.createdAt} • <i class="bi bi-globe-americas"></i></small>
-                </div>
-                <div class="ms-auto dropdown">
-                    <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                        <span class="material-symbols-outlined">more_horiz</span>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                        <li><a class="dropdown-item" href="#" onclick="editPost('${post.id}', '${post.content}')"><span class="material-symbols-outlined">edit</span>Edit</a></li>
-                        <li><a class="dropdown-item" href="#" onclick="deletePost('${post.id}')"><span class="material-symbols-outlined">delete</span>Delete</a></li>
-                    </ul>
-                </div>
+    <div class="card-body">
+        <div class="d-flex align-items-center mb-3">
+            <div class="me-3">
+                <img src="${post.avatarUrl}" alt="User Image" class="rounded-circle" width="48" height="48">
             </div>
-            <div class="mb-3">
-                <p>${post.content}</p>
+            <div>
+                <h5 class="mb-0">
+                    <a href="#" class="text-dark fw-bold">${post.username}</a>
+                    <span class="text-muted">• You</span>
+                </h5>
+                <small class="text-muted">${post.basicInfo}</small><br>
+                <small class="text-muted">${post.createdAt} • <i class="bi bi-globe-americas"></i></small>
             </div>
-            <div class="d-flex justify-content-between border-top pt-2">
-                <button class="btn btn-light d-flex align-items-center">
-                    <span class="material-symbols-outlined">thumb_up</span>Like
+            <div class="ms-auto dropdown">
+                <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span class="material-symbols-outlined">more_horiz</span>
                 </button>
-                <button class="btn btn-light d-flex align-items-center">
-                    <span class="material-symbols-outlined">comment</span> Comment
-                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li><a class="dropdown-item" href="#" onclick="editPost('${post.id}', \`${escapedContent}\`)"><span class="material-symbols-outlined">edit</span>Edit</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="deletePost('${post.id}')"><span class="material-symbols-outlined">delete</span>Delete</a></li>
+                </ul>
             </div>
         </div>
+        <div class="mb-3">
+            <p>${post.content}</p>
+        </div>
+        <div class="d-flex justify-content-between border-top pt-2">
+            <button class="btn btn-light d-flex align-items-center">
+                <span class="material-symbols-outlined">thumb_up</span>Like
+            </button>
+            <button class="btn btn-light d-flex align-items-center">
+                <span class="material-symbols-outlined">comment</span> Comment
+            </button>
+        </div>
+    </div>
     `;
 
         return postElement;
     }
+
+
 
     // Edit post function
     function editPost(postId, postContent) {
@@ -225,22 +235,25 @@
 
                 var postElement = document.querySelector(`.card[data-id='${window.currentPostId}']`);
                 if (postElement) {
-                    var postContentElement = postElement.querySelector('.mb-3 p');
-                    if (postContentElement) {
-                        postContentElement.innerHTML = updatedContent;
-                        console.log('Post Content Updated in DOM');
-                    } else {
-                        console.error('Post content element not found');
-                    }
-                } else {
-                    console.error('Post element not found');
+                    // Remove the old post element
+                    postElement.remove();
+
+                    // Create a new post element with updated data
+                    var newPostElement = createPostElement(data);
+
+                    // Insert the new post element at the correct position
+                    document.getElementById('posts-section').insertAdjacentElement('afterbegin', newPostElement);
                 }
 
+                quillModal.root.innerHTML = ''; // Clear the modal editor
                 var editPostModal = bootstrap.Modal.getInstance(document.getElementById('editPostModal'));
                 editPostModal.hide();
             })
             .catch(error => console.error('Error:', error));
     }
+
+
+
 
     // Delete post function
     function deletePost(postId) {
