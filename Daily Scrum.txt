@@ -175,3 +175,13 @@ not yet, will keep upload
 - find out the errors of heroku
 3. Need assistance / figure things out
 - heroku keep showing the page error, even deploy already successful
+-----------------------------------------------------------------------------------
+2024/09/20 Qiutian
+1. Done since last scrum
+- register and login page, basic functionalities
+- fixing all issues related to post display, edit, and update
+2. Plan until next Scrum
+- finalize all features related to post (like, comments, delete)
+- start working on profile page
+3. Need assistance / figure things out
+- not yet
