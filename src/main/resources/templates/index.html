@@ -57,6 +57,17 @@
             <!-- Posts Section -->
             <div id="posts-section">
                 <!-- New posts will appear here dynamically -->
+                    <ul>
+                        <li th:each="post : ${posts}">
+                            <div class="card" th:data-id="${post.id}">
+                                <div class="card-body">
+                                    <p th:text="${post.content}">Post content goes here...</p>
+                                    <small th:text="${post.createdAt}">Created At</small>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
             </div>
         </div>
     </div>
@@ -83,6 +94,8 @@
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
+    // Initialize Quill editors
+    // Initialize Quill editors
     var quill = new Quill('#editor-container', {
         theme: 'snow',
         modules: {
@@ -97,38 +110,51 @@
         }
     });
 
-    // Handle the form submission via AJAX
-    document.getElementById('postForm').addEventListener('submit', function(event) {
-        event.preventDefault();  // Prevent the form from submitting the normal way
-        var postContent = quill.root.innerHTML;  // Get the HTML content from the editor
+    var quillModal = new Quill('#modal-editor-container', {
+        theme: 'snow',
+        modules: {
+            toolbar: [
+                [{ 'header': [1, 2, false] }],
+                ['bold', 'italic', 'blockquote'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image'],
+                [{ 'align': [] }],
+                ['code-block'],
+            ]
+        }
+    });
 
-        // Make AJAX request to submit the post
+    // Handle form submission
+    document.getElementById('postForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var postContent = quill.root.innerHTML;
+
+        console.log('Form Submitted. Post Content:', postContent); // Debugging
+
         fetch('/posts', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
             },
-            body: JSON.stringify({
-                content: postContent
-            })
+            body: JSON.stringify({ content: postContent })
         })
             .then(response => response.json())
             .then(data => {
-                // Check the response structure
-                console.log(data);
+                console.log('Post Created:', data);
                 var postElement = createPostElement(data);
                 document.getElementById('posts-section').prepend(postElement);
             })
-            .catch(error => console.error('Error:', error));
 
+            .catch(error => console.error('Error:', error));
     });
 
-    // Function to create a post element to display dynamically
+    // Create post element function
     function createPostElement(post) {
         var postElement = document.createElement('div');
         postElement.classList.add('card', 'mb-3');
         postElement.setAttribute('data-id', post.id);
+
         postElement.innerHTML = `
         <div class="card-body">
             <div class="d-flex align-items-center mb-3">
@@ -166,46 +192,58 @@
             </div>
         </div>
     `;
+
         return postElement;
     }
 
-
+    // Edit post function
     function editPost(postId, postContent) {
-        console.log('Editing post with ID:', postId);  // Debugging line
+        console.log('Editing post with ID:', postId);
         quillModal.root.innerHTML = postContent;
-// Manually show the modal to test
+
         var editPostModal = new bootstrap.Modal(document.getElementById('editPostModal'));
         editPostModal.show();
 
         window.currentPostId = postId;
     }
 
-
+    // Save post function
     function savePost() {
         var updatedContent = quillModal.root.innerHTML;
+        console.log('Updated Content:', updatedContent);
+
         fetch(`/posts/${window.currentPostId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
+                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value || '[YOUR_CSRF_TOKEN_HERE]'
             },
-            body: JSON.stringify({
-                content: updatedContent
-            })
+            body: JSON.stringify({ content: updatedContent })
         })
             .then(response => response.json())
             .then(data => {
+                console.log('Post Updated:', data);
+
                 var postElement = document.querySelector(`.card[data-id='${window.currentPostId}']`);
                 if (postElement) {
-                    postElement.querySelector('.card-text').innerHTML = updatedContent;
+                    var postContentElement = postElement.querySelector('.mb-3 p');
+                    if (postContentElement) {
+                        postContentElement.innerHTML = updatedContent;
+                        console.log('Post Content Updated in DOM');
+                    } else {
+                        console.error('Post content element not found');
+                    }
+                } else {
+                    console.error('Post element not found');
                 }
+
                 var editPostModal = bootstrap.Modal.getInstance(document.getElementById('editPostModal'));
                 editPostModal.hide();
             })
             .catch(error => console.error('Error:', error));
     }
 
-
+    // Delete post function
     function deletePost(postId) {
         fetch(`/posts/${postId}`, {
             method: 'DELETE',
@@ -215,14 +253,16 @@
             }
         })
             .then(() => {
-                // Remove the post element from the DOM
                 var postElement = document.querySelector(`.card[data-id='${postId}']`);
                 if (postElement) {
                     postElement.remove();
+                } else {
+                    console.error('Post element not found for deletion');
                 }
             })
             .catch(error => console.error('Error:', error));
     }
+
 </script>
 </body>
 </html>

@@ -16,9 +16,10 @@ public class HomeController {
     private UserService userService;
 
     @GetMapping("/home")
-    public String home(Model model, Principal principal) {
+    public String home(HttpServletRequest request, Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         model.addAttribute("user", user);
+        model.addAttribute("currentURI", request.getRequestURI());
 //        model.addAttribute("connections", connectionService.findConnectionsByUser(user));
 //        model.addAttribute("suggestedJobs", jobService.findSuggestedJobsForUser(user));
         return "index";
