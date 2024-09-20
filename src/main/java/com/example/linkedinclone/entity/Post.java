@@ -19,7 +19,7 @@ public class Post {
 
     private String username;  // Store the username instead of user ID
 
-    private String avatarUrl = "/images/default-avatar.jpg";
+    private String avatarUrl = "/images/avatar.jpg";
     private String basicInfo = "Not provided";
     private LocalDateTime createdAt = LocalDateTime.now();
 

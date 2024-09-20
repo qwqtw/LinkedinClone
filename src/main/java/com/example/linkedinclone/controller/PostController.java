@@ -25,10 +25,10 @@ public class PostController {
 
         // Retrieve the logged-in username
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();  // Get the actual username
+        String username = authentication.getName(); // Get the actual username from authentication
 
         // Set additional fields
-        String avatarUrl = payload.getOrDefault("avatarUrl", "/images/default-avatar.jpg");
+        String avatarUrl = payload.getOrDefault("avatarUrl", "/images/avatar.jpg");
         String basicInfo = payload.getOrDefault("basicInfo", "Not provided");
 
         // Create and save the post
@@ -46,6 +46,7 @@ public class PostController {
         response.put("basicInfo", savedPost.getBasicInfo());
         response.put("createdAt", savedPost.getCreatedAt().toString());
         response.put("content", savedPost.getContent());
+        response.put("username", savedPost.getUsername()); // Include username in the response
 
         return ResponseEntity.ok(response);
     }
