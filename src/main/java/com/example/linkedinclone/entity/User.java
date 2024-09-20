@@ -42,7 +42,8 @@ public class User {
     @Transient
     private String password2;
 
-
+    @Pattern(regexp = "user|recruiter", message = "Role must be either 'user' or 'recruiter'")
+    private String role;
 
 
 
