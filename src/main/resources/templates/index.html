@@ -106,7 +106,20 @@
 
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
 <script>
-    // Initialize Quill editors
+    // Function to format the created time
+    function formatDateTime(dateString) {
+        const options = {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        };
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', options) ;
+    }
+
     // Initialize Quill editors
     var quill = new Quill('#editor-container', {
         theme: 'snow',
@@ -180,50 +193,52 @@
         postElement.classList.add('card', 'mb-3');
         postElement.setAttribute('data-id', post.id);
 
+        // Format the created time
+        var formattedCreatedAt = formatDateTime(post.createdAt);
+
         // Escape the content for safety
         var escapedContent = post.content.replace(/`/g, '\\`'); // Escape backticks
 
         postElement.innerHTML = `
-    <div class="card-body">
-        <div class="d-flex align-items-center mb-3">
-            <div class="me-3">
-                <img src="${post.avatarUrl}" alt="User Image" class="rounded-circle" width="48" height="48">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                <div class="me-3">
+                    <img src="${post.avatarUrl}" alt="User Image" class="rounded-circle" width="48" height="48">
+                </div>
+                <div>
+                    <h5 class="mb-0">
+                        <a href="#" class="text-dark fw-bold">${post.username}</a>
+                        <span class="text-muted">• You</span>
+                    </h5>
+                    <small class="text-muted">${post.basicInfo}</small><br>
+                    <small class="text-muted">${formattedCreatedAt} • <i class="bi bi-globe-americas"></i></small>
+                </div>
+                <div class="ms-auto dropdown">
+                    <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                        <span class="material-symbols-outlined">more_horiz</span>
+                    </button>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                        <li><a class="dropdown-item" href="#" onclick="editPost('${post.id}', \`${escapedContent}\`)"><span class="material-symbols-outlined">edit</span>Edit</a></li>
+                        <li><a class="dropdown-item" href="#" onclick="deletePost('${post.id}')"><span class="material-symbols-outlined">delete</span>Delete</a></li>
+                    </ul>
+                </div>
             </div>
-            <div>
-                <h5 class="mb-0">
-                    <a href="#" class="text-dark fw-bold">${post.username}</a>
-                    <span class="text-muted">• You</span>
-                </h5>
-                <small class="text-muted">${post.basicInfo}</small><br>
-                <small class="text-muted">${post.createdAt} • <i class="bi bi-globe-americas"></i></small>
+            <div class="mb-3">
+                <p>${post.content}</p>
             </div>
-            <div class="ms-auto dropdown">
-                <button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                    <span class="material-symbols-outlined">more_horiz</span>
+            <div class="d-flex justify-content-between border-top pt-2">
+                <button class="btn btn-light d-flex align-items-center">
+                    <span class="material-symbols-outlined">thumb_up</span>Like
                 </button>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                    <li><a class="dropdown-item" href="#" onclick="editPost('${post.id}', \`${escapedContent}\`)"><span class="material-symbols-outlined">edit</span>Edit</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="deletePost('${post.id}')"><span class="material-symbols-outlined">delete</span>Delete</a></li>
-                </ul>
+                <button class="btn btn-light d-flex align-items-center">
+                    <span class="material-symbols-outlined">comment</span> Comment
+                </button>
             </div>
         </div>
-        <div class="mb-3">
-            <p>${post.content}</p>
-        </div>
-        <div class="d-flex justify-content-between border-top pt-2">
-            <button class="btn btn-light d-flex align-items-center">
-                <span class="material-symbols-outlined">thumb_up</span>Like
-            </button>
-            <button class="btn btn-light d-flex align-items-center">
-                <span class="material-symbols-outlined">comment</span> Comment
-            </button>
-        </div>
-    </div>
     `;
 
         return postElement;
     }
-
 
 
     // Edit post function
