@@ -71,4 +71,15 @@ public class PostController {
         return ResponseEntity.ok(posts);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id) {
+        boolean isDeleted = postService.deletePost(id);
+        if (isDeleted) {
+            return ResponseEntity.noContent().build(); // Return 204 No Content if successful
+        } else {
+            return ResponseEntity.notFound().build(); // Return 404 Not Found if the post doesn't exist
+        }
+    }
+
+
 }

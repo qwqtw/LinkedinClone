@@ -33,5 +33,14 @@ public class PostService {
         return postRepository.findByUsername(username);
     }
 
+    public boolean deletePost(Long id) {
+        if (postRepository.existsById(id)) {
+            postRepository.deleteById(id);
+            return true;
+        }
+        return false;
+    }
+
+
 
 }
