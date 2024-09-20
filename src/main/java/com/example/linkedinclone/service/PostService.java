@@ -29,4 +29,9 @@ public class PostService {
         return postRepository.findAll();
     }
 
+    public List<Post> getPostsByUsername(String username) {
+        return postRepository.findByUsername(username);
+    }
+
+
 }

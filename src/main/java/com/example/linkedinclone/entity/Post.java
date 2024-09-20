@@ -3,32 +3,32 @@ package com.example.linkedinclone.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
 
-@Setter
-@Getter
+
 @Entity
 @Data
 @AllArgsConstructor
-
 @Table(name = "post")
 public class Post {
-
-    // Setter for id
-    // Getter for id
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Setter for content
-    // Getter for content
     private String content;
 
-    // Default constructor
+    private String username;  // Store the username instead of user ID
+
+    private String avatarUrl = "/images/default-avatar.jpg";
+    private String basicInfo = "Not provided";
+    private LocalDateTime createdAt = LocalDateTime.now();
+
     public Post() {}
 
-    // Parameterized constructor
-    public Post(String content) {
+    public Post(String content, String username) {
         this.content = content;
+        this.username = username;  // Initialize with username
+        this.createdAt = LocalDateTime.now();
     }
-
 }
+
