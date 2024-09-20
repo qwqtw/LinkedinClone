@@ -156,3 +156,12 @@ not yet, will keep upload
 - finalize all features on home page (like, comment)
 3. Need assistance / figure things out
 - not yet
+
+2024/09/19 Kejia
+1. Done since last scrum
+- user registration
+- part of login 
+2. Plan until next Scrum
+- try to finish /login security part
+3. Need assistance / figure things out
+- security part
