@@ -1,10 +1,15 @@
 package com.example.linkedinclone.service;
 
+import com.example.linkedinclone.entity.Comment;
+import com.example.linkedinclone.entity.Like;
 import com.example.linkedinclone.entity.Post;
+import com.example.linkedinclone.repository.CommentRepository;
+import com.example.linkedinclone.repository.LikeRepository;
 import com.example.linkedinclone.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 @Service
@@ -12,6 +17,11 @@ public class PostService {
 
     @Autowired
     private PostRepository postRepository;
+
+    @Autowired
+    private LikeRepository likeRepository; // Add this
+    @Autowired
+    private CommentRepository commentRepository; // Add this
 
     public Post savePost(Post post) {
         return postRepository.save(post);
@@ -41,6 +51,22 @@ public class PostService {
         return false;
     }
 
+    public void likePost(Long postId, String username) {
+        Like like = new Like();
+        like.setPostId(postId);
+        like.setUsername(username);
+        like.setCreatedAt(LocalDateTime.now());
+        likeRepository.save(like);
+    }
+
+    public Comment addComment(Long postId, String username, String content) {
+        Comment comment = new Comment();
+        comment.setPostId(postId);
+        comment.setUsername(username);
+        comment.setContent(content);
+        comment.setCreatedAt(LocalDateTime.now());
+        return commentRepository.save(comment);
+    }
 
 
 }

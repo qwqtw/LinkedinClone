@@ -4,6 +4,7 @@ import lombok.*;
 
 import java.time.LocalDateTime;
 
+@Data
 @Entity
 @Table(name = "likes")
 public class Like {
@@ -19,4 +20,13 @@ public class Like {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     // Getters and setters...
+    // Constructors
+    public Like() {}
+
+    public Like(String username, Long postId, LocalDateTime createdAt) {
+        this.username = username;
+        this.postId = postId;
+        this.createdAt = createdAt;
+    }
+
 }

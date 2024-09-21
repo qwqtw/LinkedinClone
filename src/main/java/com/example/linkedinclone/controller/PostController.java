@@ -1,5 +1,6 @@
 package com.example.linkedinclone.controller;
 
+import com.example.linkedinclone.entity.Comment;
 import com.example.linkedinclone.entity.Post;
 import com.example.linkedinclone.service.PostService;
 import com.example.linkedinclone.dto.PostUpdateRequest;
@@ -79,6 +80,27 @@ public class PostController {
         } else {
             return ResponseEntity.notFound().build(); // Return 404 Not Found if the post doesn't exist
         }
+    }
+
+    @PostMapping("/{postId}/likes")
+    public ResponseEntity<Void> likePost(@PathVariable Long postId) {
+        // Retrieve the logged-in username
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        // Call the service to like the post
+        postService.likePost(postId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/{postId}/comments")
+    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Map<String, String> payload) {
+        String content = payload.get("content");
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+
+        Comment comment = postService.addComment(postId, username, content);
+        return ResponseEntity.ok(comment);
     }
 
 

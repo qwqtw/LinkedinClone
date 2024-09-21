@@ -1,5 +1,6 @@
 package com.example.linkedinclone.controller;
 
+import com.example.linkedinclone.entity.Comment;
 import com.example.linkedinclone.entity.Post;
 import com.example.linkedinclone.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.web.bind.annotation.GetMapping;
 import com.example.linkedinclone.service.UserService;
 import com.example.linkedinclone.repository.PostRepository;
+import com.example.linkedinclone.repository.CommentRepository;
 
 import java.security.Principal;
 import java.util.List;
@@ -21,10 +23,19 @@ public class HomeController {
     @Autowired
     private PostRepository postRepository;
 
+    @Autowired
+    private CommentRepository commentRepository;
+
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
         List<Post> posts= postRepository.findAll();
+
+        for (Post post : posts) {
+            List<Comment> comments = commentRepository.findByPostId(post.getId());
+            // Optionally, fetch likes count or other data if needed
+            post.setComments(comments);
+        }
 
         model.addAttribute("user", user);
         model.addAttribute("currentURI", request.getRequestURI());
