@@ -25,8 +25,12 @@ public class Post {
     private String avatarUrl = "/images/avatar.jpg";
     private String basicInfo = "Not provided";
     private LocalDateTime createdAt = LocalDateTime.now();
+
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
+
+    @Column(name = "likes_count", nullable = false)
+    private int likesCount = 0; // Initialize to 0
 
     public Post(String content, String username) {
         this.content = content;
