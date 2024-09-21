@@ -95,5 +95,13 @@ public class PostService {
         return commentRepository.save(comment);
     }
 
+    public boolean deleteComment(Long postId, Long commentId) {
+        if (commentRepository.existsById(commentId)) {
+            commentRepository.deleteById(commentId);
+            return true;
+        }
+        return false;
+    }
+
 
 }
