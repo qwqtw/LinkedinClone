@@ -174,18 +174,6 @@
             .catch(error => console.error('Error:', error));
     });
 
-    // Fetch existing posts on page load
-    window.addEventListener('DOMContentLoaded', (event) => {
-        fetch('/posts')
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(post => {
-                    var postElement = createPostElement(post);
-                    document.getElementById('posts-section').appendChild(postElement);
-                });
-            })
-            .catch(error => console.error('Error fetching posts:', error));
-    });
 
     // Create post element function
     function createPostElement(post) {
@@ -195,9 +183,7 @@
 
         // Format the created time
         var formattedCreatedAt = formatDateTime(post.createdAt);
-
-        // Escape the content for safety
-        var escapedContent = post.content.replace(/`/g, '\\`'); // Escape backticks
+        var escapedContent = post.content.replace(/`/g, '\\`');
 
         postElement.innerHTML = `
         <div class="card-body">
@@ -227,18 +213,27 @@
                 <p>${post.content}</p>
             </div>
             <div class="d-flex justify-content-between border-top pt-2">
-                <button class="btn btn-light d-flex align-items-center">
-                    <span class="material-symbols-outlined">thumb_up</span>Like
+                <button class="btn btn-light d-flex align-items-center" id="like-button-${post.id}" onclick="likePost(${post.id})">
+                    <span class="material-symbols-outlined" id="like-icon-${post.id}">thumb_up_off_alt</span>
+                    <span id="like-count-${post.id}">${post.likesCount}</span>
                 </button>
-                <button class="btn btn-light d-flex align-items-center">
+                <button class="btn btn-light d-flex align-items-center" onclick="toggleCommentInput(${post.id})">
                     <span class="material-symbols-outlined">comment</span> Comment
                 </button>
+            </div>
+            <div id="comment-input-${post.id}" class="d-none mt-3">
+                <input type="text" id="comment-text-${post.id}" class="form-control" placeholder="Write a comment...">
+                <button class="btn btn-primary mt-2" onclick="submitComment(${post.id})">Send</button>
+            </div>
+            <div id="comments-section-${post.id}" class="mt-2">
+                <!-- Comments will be displayed here -->
             </div>
         </div>
     `;
 
         return postElement;
     }
+
 
 
     // Edit post function
@@ -331,6 +326,166 @@
             postToDelete = null;
         }
     });
+
+    let liked = false;
+
+    function likePost(postId) {
+        const likeIcon = document.getElementById(`like-icon-${postId}`);
+        const likeCount = document.getElementById(`like-count-${postId}`);
+
+        // Determine if the post is currently liked
+        const isLiked = localStorage.getItem(`liked-${postId}`) === 'true';
+        const method = isLiked ? 'DELETE' : 'POST'; // Use DELETE for unliking
+
+        fetch(`/posts/${postId}/likes`, {
+            method: method,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    const newLiked = !isLiked; // Toggle liked state
+                    localStorage.setItem(`liked-${postId}`, newLiked); // Update local storage
+                    likeIcon.textContent = newLiked ? 'thumb_up' : 'thumb_up_off_alt'; // Change icon
+                    likeIcon.style.color = newLiked ? 'blue' : ''; // Change color
+                    likeCount.textContent = parseInt(likeCount.textContent) + (newLiked ? 1 : -1); // Update like count
+                } else {
+                    console.error('Error liking/unliking the post:', response.status);
+                }
+            })
+            .catch(error => {
+                console.error('Fetch error:', error);
+            });
+    }
+
+    function setInitialLikedState(postId) {
+        const isLiked = localStorage.getItem(`liked-${postId}`) === 'true';
+        const likeIcon = document.getElementById(`like-icon-${postId}`);
+        likeIcon.textContent = isLiked ? 'thumb_up' : 'thumb_up_off_alt'; // Set initial icon
+        likeIcon.style.color = isLiked ? 'blue' : ''; // Set initial color
+    }
+
+    // Fetch existing posts on page load
+    window.addEventListener('DOMContentLoaded', (event) => {
+        fetch('/posts')
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(post => {
+                    var postElement = createPostElement(post);
+                    document.getElementById('posts-section').appendChild(postElement);
+                    fetchComments(post.id);  // Fetch comments for each post
+                });
+
+                data.forEach(post => setInitialLikedState(post.id));
+            })
+            .catch(error => console.error('Error fetching posts:', error));
+    });
+
+
+
+    // Toggle comment input
+    function toggleCommentInput(postId) {
+        const commentInput = document.getElementById(`comment-input-${postId}`);
+        commentInput.classList.toggle('d-none');
+    }
+
+    // Submit comment
+    function submitComment(postId) {
+        const commentInput = document.getElementById(`comment-text-${postId}`);
+        const commentContent = commentInput.value;
+
+        if (!commentContent.trim()) return; // Prevent empty comments
+
+        fetch(`/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
+            },
+            body: JSON.stringify({ content: commentContent })
+        })
+            .then(response => response.json())
+            .then(comment => {
+                const commentsSection = document.getElementById(`comments-section-${postId}`);
+                commentsSection.appendChild(createCommentElement(comment));
+                commentInput.value = ''; // Clear the input field
+                fetchComments(postId);  // Refresh comments to ensure persistence
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+
+    // Create comment element
+    function createCommentElement(comment) {
+        var commentElement = document.createElement('div');
+        commentElement.classList.add('comment', 'mt-2');
+        commentElement.setAttribute('data-id', comment.id); // Add data-id for easy selection
+
+        commentElement.innerHTML = `
+        <div class="d-flex align-items-center">
+            <img src="${comment.avatarUrl}" alt="User Image" class="rounded-circle" width="32" height="32" />
+            <div class="ms-2">
+                <h6 class="mb-0">${comment.username}</h6>
+                <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
+                <p>${comment.content}</p>
+                <button class="btn btn-link text-danger" onclick="deleteComment(${comment.id})">Delete</button>
+            </div>
+        </div>
+    `;
+        return commentElement;
+    }
+
+
+    // Delete a comment
+    function deleteComment(commentId) {
+        fetch(`/posts/${postId}/comments/${commentId}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
+            }
+        })
+            .then(response => {
+                if (response.ok) {
+                    const commentElement = document.querySelector(`.comment[data-id='${commentId}']`);
+                    if (commentElement) commentElement.remove();
+                } else {
+                    console.error('Error deleting comment:', response.status);
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    }
+
+
+
+    async function addComment(postId, content) {
+        const response = await fetch(`/posts/${postId}/comments`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ content })
+        });
+
+        if (response.ok) {
+            // Refresh comments after adding
+            fetchComments(postId);
+        }
+    }
+
+    async function fetchComments(postId) {
+        const response = await fetch(`/posts/${postId}/comments`);
+        const comments = await response.json();
+
+        const commentsSection = document.getElementById(`comments-section-${postId}`);
+        commentsSection.innerHTML = '';  // Clear existing comments before adding
+
+        comments.forEach(comment => {
+            commentsSection.appendChild(createCommentElement(comment));  // Append each comment
+        });
+    }
 
 
 </script>

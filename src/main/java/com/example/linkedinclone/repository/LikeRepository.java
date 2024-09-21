@@ -3,6 +3,12 @@ package com.example.linkedinclone.repository;
 import com.example.linkedinclone.entity.Like;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.Optional;
+
 public interface LikeRepository extends JpaRepository<Like, Long> {
-    // You can add methods to query likes if needed
+    Optional<Like> findByPostIdAndUsername(Long postId, String username);
+    long countByPostId(Long postId);
+    boolean existsByPostIdAndUsername(Long postId, String username);
+
+
 }

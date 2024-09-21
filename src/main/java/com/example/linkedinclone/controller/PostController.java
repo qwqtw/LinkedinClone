@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.*;
+import com.example.linkedinclone.repository.CommentRepository;
 
 
 @RestController
@@ -19,6 +20,9 @@ public class PostController {
 
     @Autowired
     private PostService postService;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Map<String, String> payload) {
@@ -87,21 +91,54 @@ public class PostController {
         // Retrieve the logged-in username
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
-        // Call the service to like the post
         postService.likePost(postId, username);
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{postId}/likes")
+    public ResponseEntity<Void> unlikePost(@PathVariable Long postId) {
+        // Retrieve the logged-in username
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        postService.unlikePost(postId, username);
+        return ResponseEntity.ok().build();
+    }
+
+
     @PostMapping("/{postId}/comments")
-    public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Map<String, String> payload) {
+    public ResponseEntity<Map<String, Object>> addComment(@PathVariable Long postId, @RequestBody Map<String, String> payload) {
         String content = payload.get("content");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
 
         Comment comment = postService.addComment(postId, username, content);
-        return ResponseEntity.ok(comment);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("id", comment.getId());
+        response.put("username", comment.getUsername());
+        response.put("content", comment.getContent());
+        response.put("createdAt", comment.getCreatedAt().toString());
+
+        return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{postId}/comments")
+    public ResponseEntity<List<Comment>> getCommentsByPostId(@PathVariable Long postId) {
+        List<Comment> comments = commentRepository.findByPostId(postId);
+        return ResponseEntity.ok(comments);
+    }
+
+    @DeleteMapping("/{postId}/comments/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
+        boolean isDeleted = postService.deleteComment(postId, commentId);
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 
 
 }

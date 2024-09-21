@@ -30,7 +30,10 @@ public class Post {
     private List<Comment> comments = new ArrayList<>();
 
     @Column(name = "likes_count", nullable = false)
-    private int likesCount = 0; // Initialize to 0
+    private long likesCount = 0; // Change to long
+
+    @Transient // Make sure this isn't persisted in the database
+    private boolean userHasLiked; // Add this field
 
     public Post(String content, String username) {
         this.content = content;

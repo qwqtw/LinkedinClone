@@ -52,12 +52,39 @@ public class PostService {
     }
 
     public void likePost(Long postId, String username) {
-        Like like = new Like();
-        like.setPostId(postId);
-        like.setUsername(username);
-        like.setCreatedAt(LocalDateTime.now());
-        likeRepository.save(like);
+        Optional<Like> existingLike = likeRepository.findByPostIdAndUsername(postId, username);
+
+        if (existingLike.isPresent()) {
+            // Unlike the post
+            likeRepository.delete(existingLike.get());
+            Post post = postRepository.findById(postId).orElseThrow();
+            post.setLikesCount(post.getLikesCount() - 1); // Decrement like count
+            postRepository.save(post);
+        } else {
+            // Like the post
+            Like like = new Like();
+            like.setPostId(postId);
+            like.setUsername(username);
+            like.setCreatedAt(LocalDateTime.now());
+            likeRepository.save(like);
+
+            Post post = postRepository.findById(postId).orElseThrow();
+            post.setLikesCount(post.getLikesCount() + 1); // Increment like count
+            postRepository.save(post);
+        }
     }
+
+
+    public void unlikePost(Long postId, String username) {
+        Optional<Like> existingLike = likeRepository.findByPostIdAndUsername(postId, username);
+        if (existingLike.isPresent()) {
+            likeRepository.delete(existingLike.get());
+            Post post = postRepository.findById(postId).orElseThrow();
+            post.setLikesCount(post.getLikesCount() - 1); // Decrement like count
+            postRepository.save(post);
+        }
+    }
+
 
     public Comment addComment(Long postId, String username, String content) {
         Comment comment = new Comment();
@@ -66,6 +93,14 @@ public class PostService {
         comment.setContent(content);
         comment.setCreatedAt(LocalDateTime.now());
         return commentRepository.save(comment);
+    }
+
+    public boolean deleteComment(Long postId, Long commentId) {
+        if (commentRepository.existsById(commentId)) {
+            commentRepository.deleteById(commentId);
+            return true;
+        }
+        return false;
     }
 
 

@@ -1,17 +1,15 @@
 package com.example.linkedinclone.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class PostUpdateRequest {
 
     private String content;
-
-    // Default constructor
-    public PostUpdateRequest() {
-    }
-
-    // Parameterized constructor
-    public PostUpdateRequest(String content) {
-        this.content = content;
-    }
 
     // Getter for content
     public String getContent() {

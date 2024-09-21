@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import com.example.linkedinclone.service.UserService;
 import com.example.linkedinclone.repository.PostRepository;
 import com.example.linkedinclone.repository.CommentRepository;
+import com.example.linkedinclone.repository.LikeRepository;
 
 import java.security.Principal;
 import java.util.List;
@@ -26,24 +27,32 @@ public class HomeController {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private LikeRepository likeRepository;
+
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model, Principal principal) {
         User user = userService.findByUsername(principal.getName());
-        List<Post> posts= postRepository.findAll();
+        List<Post> posts = postRepository.findAll();
 
         for (Post post : posts) {
             List<Comment> comments = commentRepository.findByPostId(post.getId());
-            // Optionally, fetch likes count or other data if needed
             post.setComments(comments);
+
+            // Add this check to see if the user has liked the post
+            boolean userHasLiked = likeRepository.findByPostIdAndUsername(post.getId(), user.getUsername()).isPresent();
+            post.setUserHasLiked(userHasLiked); // Add this field to your Post entity
+
+            post.setLikesCount(likeRepository.countByPostId(post.getId())); // Update like count
         }
 
         model.addAttribute("user", user);
         model.addAttribute("currentURI", request.getRequestURI());
         model.addAttribute("posts", posts);
-//        model.addAttribute("connections", connectionService.findConnectionsByUser(user));
-//        model.addAttribute("suggestedJobs", jobService.findSuggestedJobsForUser(user));
         return "index";
     }
+
+
 
 
     @GetMapping("/network")
