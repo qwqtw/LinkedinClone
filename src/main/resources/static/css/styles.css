@@ -10,7 +10,30 @@ body {
     line-height: 1; /* Ensure line height is consistent */
 }
 
+/*Comments*/
+.comment {
+    border: 1px solid #e0e0e0; /* Light gray border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px; /* Padding for spacing */
+    background-color: #f9f9f9; /* Light background color */
+    margin-bottom: 10px; /* Spacing between comments */
+}
 
+.comment h6 {
+    font-weight: bold; /* Bold username */
+    margin-bottom: 5px; /* Spacing below the username */
+}
+
+.comment small {
+    display: block; /* Ensures the timestamp is on a new line */
+    margin-bottom: 5px; /* Spacing below the timestamp */
+}
+
+.comment p {
+    margin-bottom: 0; /* Removes margin below comment content */
+}
+
+/*----*/
 .navbar {
     background-color: #fdfdfd;
     border-bottom: 1px solid #dcdcdc;

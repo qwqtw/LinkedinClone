@@ -420,29 +420,37 @@
     // Create comment element
     function createCommentElement(comment, postId) {
         var commentElement = document.createElement('div');
-        commentElement.classList.add('comment', 'mt-2');
-        commentElement.setAttribute('data-id', comment.id); // Add data-id for easy selection
+        commentElement.classList.add('comment', 'mt-2', 'd-flex', 'justify-content-between');
+        commentElement.setAttribute('data-id', comment.id); // Add data-id attribute
 
         commentElement.innerHTML = `
-        <div class="d-flex align-items-center">
-            <img src="${comment.avatarUrl}" alt="User Image" class="rounded-circle" width="32" height="32" />
-            <div class="ms-2">
-                <h6 class="mb-0">${comment.username}</h6>
-                <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
-                <p>${comment.content}</p>
-                <button class="btn btn-link text-danger" onclick="deleteComment(${postId}, ${comment.id})">Delete</button>
-            </div>
+    <div class="d-flex align-items-start">
+        <img src="${comment.avatarUrl}" alt="User Image" class="rounded-circle me-2" width="32" height="32" />
+        <div class="flex-grow-1">
+            <h6 class="mb-0">${comment.username}</h6>
+            <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
+            <p>${comment.content}</p>
         </div>
+    </div>
+    <button class="btn btn-link text-danger" onclick="deleteComment(${postId}, ${comment.id})">Delete</button>
     `;
         return commentElement;
     }
 
 
 
-    // Delete a comment with confirmation
+
+
+    // Delete a comment
     function deleteComment(postId, commentId) {
         const confirmed = confirm("Are you sure you want to delete this comment?");
         if (!confirmed) return; // Exit if the user cancels
+
+        // Find the comment element to remove it immediately
+        const commentElement = document.querySelector(`.comment[data-id='${commentId}']`);
+        if (commentElement) {
+            commentElement.remove(); // Remove it from the DOM
+        }
 
         fetch(`/posts/${postId}/comments/${commentId}`, {
             method: 'DELETE',
@@ -452,33 +460,15 @@
             }
         })
             .then(response => {
-                if (response.ok) {
-                    const commentElement = document.querySelector(`.comment[data-id='${commentId}']`);
-                    if (commentElement) commentElement.remove();
-                } else {
+                if (!response.ok) {
                     console.error('Error deleting comment:', response.status);
+                    // If there was an error, you might want to re-add the comment
+                    // You can also show an error message to the user
                 }
             })
             .catch(error => console.error('Error:', error));
     }
 
-
-
-
-    async function addComment(postId, content) {
-        const response = await fetch(`/posts/${postId}/comments`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ content })
-        });
-
-        if (response.ok) {
-            // Refresh comments after adding
-            fetchComments(postId);
-        }
-    }
 
     async function fetchComments(postId) {
         const response = await fetch(`/posts/${postId}/comments`);
