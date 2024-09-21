@@ -185,3 +185,13 @@ not yet, will keep upload
 - start working on profile page
 3. Need assistance / figure things out
 - not yet
+
+2024/09/19 Kejia
+1. Done since last scrum
+- create data of jobs/recruiters
+- create job/recruiter entity, jobs html
+- work on search/show job funtions
+2. Plan until next Scrum
+- try to finish jobs part
+3. Need assistance / figure things out
+- not yet
