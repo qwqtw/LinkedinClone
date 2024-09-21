@@ -6,6 +6,8 @@ import java.time.LocalDateTime;
 
 @Data
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "likes")
 public class Like {
     @Id
@@ -18,10 +20,6 @@ public class Like {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
-
-    // Getters and setters...
-    // Constructors
-    public Like() {}
 
     public Like(String username, Long postId, LocalDateTime createdAt) {
         this.username = username;

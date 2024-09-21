@@ -11,6 +11,7 @@ import java.util.List;
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "post")
 public class Post {
     @Id
@@ -27,22 +28,11 @@ public class Post {
     @OneToMany(mappedBy = "postId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
-    public Post() {}
-
     public Post(String content, String username) {
         this.content = content;
         this.username = username;  // Initialize with username
         this.createdAt = LocalDateTime.now();
     }
 
-    // Setter for comments
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
-
-    // Getter for comments
-    public List<Comment> getComments() {
-        return comments;
-    }
 }
 
