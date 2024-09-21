@@ -345,12 +345,15 @@
     let liked = false;
 
     function likePost(postId) {
-        const likeButton = document.getElementById(`like-button-${postId}`);
         const likeIcon = document.getElementById(`like-icon-${postId}`);
         const likeCount = document.getElementById(`like-count-${postId}`);
 
+        // Determine if the post is currently liked
+        const isLiked = localStorage.getItem(`liked-${postId}`) === 'true';
+        const method = isLiked ? 'DELETE' : 'POST'; // Use DELETE for unliking
+
         fetch(`/posts/${postId}/likes`, {
-            method: 'POST',
+            method: method,
             headers: {
                 'Content-Type': 'application/json',
                 'X-CSRF-TOKEN': document.querySelector('input[name="_csrf"]').value
@@ -358,18 +361,32 @@
         })
             .then(response => {
                 if (response.ok) {
-                    liked = !liked; // Toggle liked state
-                    likeIcon.textContent = liked ? 'thumb_up' : 'thumb_up_off_alt'; // Change icon
-                    likeIcon.style.color = liked ? 'blue' : ''; // Change color
-                    likeCount.textContent = parseInt(likeCount.textContent) + (liked ? 1 : -1); // Update like count
+                    const newLiked = !isLiked; // Toggle liked state
+                    localStorage.setItem(`liked-${postId}`, newLiked); // Update local storage
+                    likeIcon.textContent = newLiked ? 'thumb_up' : 'thumb_up_off_alt'; // Change icon
+                    likeIcon.style.color = newLiked ? 'blue' : ''; // Change color
+                    likeCount.textContent = parseInt(likeCount.textContent) + (newLiked ? 1 : -1); // Update like count
                 } else {
-                    console.error('Error liking the post:', response.status);
+                    console.error('Error liking/unliking the post:', response.status);
                 }
             })
             .catch(error => {
                 console.error('Fetch error:', error);
             });
     }
+
+    function setInitialLikedState(postId) {
+        const isLiked = localStorage.getItem(`liked-${postId}`) === 'true';
+        const likeIcon = document.getElementById(`like-icon-${postId}`);
+        likeIcon.textContent = isLiked ? 'thumb_up' : 'thumb_up_off_alt'; // Set initial icon
+        likeIcon.style.color = isLiked ? 'blue' : ''; // Set initial color
+    }
+
+    // Call this function on page load to set the initial liked state
+    document.addEventListener('DOMContentLoaded', () => {
+        const postIds = [/* array of post IDs */];
+        postIds.forEach(postId => setInitialLikedState(postId));
+    });
 
 
 

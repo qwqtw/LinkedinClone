@@ -87,11 +87,19 @@ public class PostController {
         // Retrieve the logged-in username
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
-
-        // Call the service to like the post
         postService.likePost(postId, username);
         return ResponseEntity.ok().build();
     }
+
+    @DeleteMapping("/{postId}/likes")
+    public ResponseEntity<Void> unlikePost(@PathVariable Long postId) {
+        // Retrieve the logged-in username
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        postService.unlikePost(postId, username);
+        return ResponseEntity.ok().build();
+    }
+
 
     @PostMapping("/{postId}/comments")
     public ResponseEntity<Comment> addComment(@PathVariable Long postId, @RequestBody Map<String, String> payload) {

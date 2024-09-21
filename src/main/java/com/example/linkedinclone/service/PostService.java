@@ -75,6 +75,15 @@ public class PostService {
     }
 
 
+    public void unlikePost(Long postId, String username) {
+        Optional<Like> existingLike = likeRepository.findByPostIdAndUsername(postId, username);
+        if (existingLike.isPresent()) {
+            likeRepository.delete(existingLike.get());
+            Post post = postRepository.findById(postId).orElseThrow();
+            post.setLikesCount(post.getLikesCount() - 1); // Decrement like count
+            postRepository.save(post);
+        }
+    }
 
 
     public Comment addComment(Long postId, String username, String content) {
