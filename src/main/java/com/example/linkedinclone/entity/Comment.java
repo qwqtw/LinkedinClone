@@ -1,5 +1,7 @@
 package com.example.linkedinclone.entity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +20,7 @@ public class Comment {
 
     private String username;  // Store username directly
 
+    @NotBlank(message="Content is required")
     private String content;
 
     @Column(name = "created_at")
