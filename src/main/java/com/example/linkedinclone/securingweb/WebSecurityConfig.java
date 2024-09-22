@@ -1,5 +1,6 @@
 package com.example.linkedinclone.securingweb;
 
+import com.example.linkedinclone.handler.CustomAuthenticationFailureHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -9,7 +10,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
@@ -46,6 +47,7 @@ public class WebSecurityConfig {
                         .loginPage("/login")
                         .usernameParameter("username")
                         .defaultSuccessUrl("/home", true) // Redirect to home after login
+                        .failureHandler(customAuthenticationFailureHandler())
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -55,6 +57,9 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-
+    @Bean
+    public AuthenticationFailureHandler customAuthenticationFailureHandler() {
+        return new CustomAuthenticationFailureHandler();
+    }
 
 }
