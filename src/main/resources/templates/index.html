@@ -170,7 +170,11 @@
         event.preventDefault();
         var postContent = quill.root.innerHTML;
 
-        console.log('Form Submitted. Post Content:', postContent); // Debugging
+        if (!postContent.trim() || postContent === '<p><br></p>') {
+            alert("Post content cannot be empty!"); // Alert for empty post
+            return; // Prevent empty post submission
+        }
+
 
         fetch('/posts', {
             method: 'POST',
@@ -186,7 +190,6 @@
                 var postElement = createPostElement(data);
                 document.getElementById('posts-section').prepend(postElement);
             })
-
             .catch(error => console.error('Error:', error));
     });
 
@@ -196,6 +199,10 @@
         var postElement = document.createElement('div');
         postElement.classList.add('card', 'mb-3');
         postElement.setAttribute('data-id', post.id);
+
+        // Ensure like count is defined
+        const initialLikesCount = post.likesCount || 0; // Fallback to 0 if undefined
+
 
         // Format the created time
         var formattedCreatedAt = formatDateTime(post.createdAt);
@@ -229,10 +236,10 @@
                 <p>${post.content}</p>
             </div>
             <div class="d-flex justify-content-between border-top pt-2">
-                <button class="btn btn-light d-flex align-items-center" id="like-button-${post.id}" onclick="likePost(${post.id})">
-                    <span class="material-symbols-outlined" id="like-icon-${post.id}">thumb_up_off_alt</span>
-                    <span id="like-count-${post.id}">${post.likesCount}</span>
-                </button>
+              <button class="btn btn-light d-flex align-items-center" id="like-button-${post.id}" onclick="likePost(${post.id})">
+                <span class="material-symbols-outlined" id="like-icon-${post.id}">thumb_up_off_alt</span>
+                <span id="like-count-${post.id}">${initialLikesCount}</span> <!-- Use initialLikesCount -->
+            </button>
                 <button class="btn btn-light d-flex align-items-center" onclick="toggleCommentInput(${post.id})">
                     <span class="material-symbols-outlined">comment</span> Comment
                 </button>
@@ -366,7 +373,10 @@
                     localStorage.setItem(`liked-${postId}`, newLiked); // Update local storage
                     likeIcon.textContent = newLiked ? 'thumb_up' : 'thumb_up_off_alt'; // Change icon
                     likeIcon.style.color = newLiked ? 'blue' : ''; // Change color
-                    likeCount.textContent = parseInt(likeCount.textContent) + (newLiked ? 1 : -1); // Update like count
+
+                    // Update like count, ensuring it’s a valid number
+                    let currentCount = parseInt(likeCount.textContent) || 0; // Fallback to 0
+                    likeCount.textContent = currentCount + (newLiked ? 1 : -1); // Update like count
                 } else {
                     console.error('Error liking/unliking the post:', response.status);
                 }
@@ -375,6 +385,7 @@
                 console.error('Fetch error:', error);
             });
     }
+
 
     function setInitialLikedState(postId) {
         const isLiked = localStorage.getItem(`liked-${postId}`) === 'true';
@@ -396,7 +407,10 @@
         const commentInput = document.getElementById(`comment-text-${postId}`);
         const commentContent = commentInput.value;
 
-        if (!commentContent.trim()) return; // Prevent empty comments
+        if (!commentContent.trim()){
+            alert("Comment cannot be empty!");
+            return; 
+        }// Prevent empty comments
 
         fetch(`/posts/${postId}/comments`, {
             method: 'POST',
