@@ -42,17 +42,10 @@ public class User {
     @Transient
     private String password2;
 
-    @Pattern(regexp = "user|recruiter", message = "Role must be either 'user' or 'recruiter'")
+    @Pattern(regexp = "user|recruiter|admin", message = "Role must be either 'user', 'recruiter', or 'admin'")
     private String role;
 
 
 
-    // The mappedBy attribute tells JPA that the User entity does not own the relationship
-    // (it is managed by the author field in the Article entity),
-    // so JPA should not create a foreign key column in the User table.
-
-    // CascadeType.ALL means that any operation (persist, merge, remove, etc.) performed on a User entity
-    // will be cascaded to its associated Article entities. For example, if you delete a User,
-    // all associated Article entities will also be deleted automatically.
 }
 

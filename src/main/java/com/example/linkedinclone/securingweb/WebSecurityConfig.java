@@ -37,9 +37,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((requests) -> requests
-                        .requestMatchers("/", "/index", "/register", "/home", "/login", "/css/**", "/js/**", "/images/**").permitAll() // Allow static resources
+                        .requestMatchers("/", "/index", "/register", "/home", "/login", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/admin/**").hasRole("admin") // Restrict admin routes
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(login -> login
                         .loginPage("/login")
                         .usernameParameter("username")
