@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang = "en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head(title='The Network')"></head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Left Section: Current User's Connections -->
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Your Connections</h5>
+
+                    <!-- Sort selection form -->
+                    <form action="/connections" method="get">
+                        <label for="sortBy">Sort by:</label>
+                        <select name="sortBy" id="sortBy" class="form-control">
+                            <option value="receiver.username">Name</option>
+                            <option value="createdAt">Connection Date</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary mt-2">Sort</button>
+                    </form>
+
+                    <ul class="list-group list-group-flush mt-3">
+                        <li class="list-group-item" th:each="connection : ${connections}">
+                            <div class="d-flex align-items-center">
+                                <img th:src="@{/images/avatar.jpg}" class="rounded-circle me-3" alt="Connection Avatar" width="50" height="50">
+                                <div>
+                                    <h6 class="mb-0" th:text="${connection.receiver.username}">John Doe</h6>
+                                    <small class="text-muted" th:text="${connection.createdAt}">Connection Date</small>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Connection Requests Section -->
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Pending Connection Requests</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item" th:each="request : ${pendingRequests}">
+                            <div class="d-flex align-items-center">
+                                <img th:src="@{/images/avatar.jpg}" class="rounded-circle me-3" alt="Request Avatar" width="50" height="50">
+                                <div>
+                                    <h6 class="mb-0" th:text="${request.sender.username}">Jane Doe</h6>
+                                    <small class="text-muted">Wants to connect with you</small>
+                                </div>
+
+                                <!-- Accept connection request -->
+                                <form th:action="@{/connections/accept}" method="post" class="ms-auto me-2">
+                                    <input type="hidden" name="requestId" th:value="${request.id}">
+                                    <button type="submit" class="btn btn-primary btn-sm">Accept</button>
+                                </form>
+
+                                <!-- Reject connection request -->
+                                <form th:action="@{/connections/reject}" method="post">
+                                    <input type="hidden" name="requestId" th:value="${request.id}">
+                                    <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Section: People You May Know -->
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">People You May Know</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3" th:each="user : ${suggestedUsers}">
+                            <div class="card text-center">
+                                <div class="card-body">
+                                    <img th:src="@{/images/avatar.jpg}" class="rounded-circle mx-auto d-block" alt="User Image" style="width: 100px;">
+                                    <h6 class="card-title mt-2" th:text="${user.username}">Username</h6>
+                                    <button class="btn btn-primary btn-sm mt-2" th:onclick="'connect('+${user.id}+')'">Connect</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
