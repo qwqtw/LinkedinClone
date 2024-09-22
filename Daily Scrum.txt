@@ -205,6 +205,15 @@ not yet, will keep upload
 - heroku keep showing the page error, even deploy already successful
 
 -----------------------------------------------------------------------------------
+2024/09/22 Qiutian
+1. Done since last scrum
+- post display, edit, and update
+- comments, like
+2. Plan until next Scrum
+- set permission for post edit/delete and comment delete based on current user
+3. Need assistance / figure things out
+- permission for post edit/delete and comment delete based on current user
+
 2024/09/22 Kejia
 1. Done since last scrum
 - user can search job by keywords,company and title
@@ -214,3 +223,4 @@ not yet, will keep upload
 - start to work on recruiter/jobs
 3. Need assistance / figure things out
 - not yet
+-----------------------------------------------------------------------------------
