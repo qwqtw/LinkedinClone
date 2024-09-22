@@ -203,3 +203,14 @@ not yet, will keep upload
 - keep working on the connection page
 3. Need assistance / figure things out
 - heroku keep showing the page error, even deploy already successful
+
+-----------------------------------------------------------------------------------
+2024/09/22 Kejia
+1. Done since last scrum
+- user can search job by keywords,company and title
+- part of recommended jobs
+2. Plan until next Scrum
+- try to finish user/jobs part
+- start to work on recruiter/jobs
+3. Need assistance / figure things out
+- not yet
