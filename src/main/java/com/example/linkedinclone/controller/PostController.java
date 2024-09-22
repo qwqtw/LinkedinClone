@@ -3,6 +3,7 @@ package com.example.linkedinclone.controller;
 import com.example.linkedinclone.entity.Comment;
 import com.example.linkedinclone.entity.Post;
 import com.example.linkedinclone.service.PostService;
+import com.example.linkedinclone.service.UserService;
 import com.example.linkedinclone.dto.PostUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,10 @@ public class PostController {
 
     @Autowired
     private CommentRepository commentRepository;
+
+    @Autowired
+    private UserService userService;
+
 
     @PostMapping
     public ResponseEntity<Map<String, Object>> createPost(@RequestBody Map<String, String> payload) {
