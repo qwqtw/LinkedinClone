@@ -300,19 +300,23 @@
 
                 var postElement = document.querySelector(`.card[data-id='${window.currentPostId}']`);
                 if (postElement) {
-                    // Remove the old post element
-                    postElement.remove();
+                    postElement.remove(); // Remove the old post element
 
                     // Create a new post element with updated data
                     var newPostElement = createPostElement(data);
 
                     // Insert the new post element at the correct position
                     document.getElementById('posts-section').insertAdjacentElement('afterbegin', newPostElement);
+
+                    // Fetch comments for the updated post
+                    fetchComments(data.id);
+                    setInitialLikedState(data.id);
                 }
 
                 quillModal.root.innerHTML = ''; // Clear the modal editor
                 var editPostModal = bootstrap.Modal.getInstance(document.getElementById('editPostModal'));
                 editPostModal.hide();
+
             })
             .catch(error => console.error('Error:', error));
     }
