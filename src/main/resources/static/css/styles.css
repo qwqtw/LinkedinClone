@@ -64,10 +64,11 @@ body {
 }
 
 /* Post Writing Section */
-#editor-container {
+#editor-container, #modal-editor-container {
     border: 1px solid #e1e9ee;
     padding: 0.5rem;
     background-color: #fdfdfd; /* Ensure background is white */
+    height: 250px;
 }
 
 .card-body {
