@@ -23,6 +23,7 @@ public class Experience {
     private LocalDate endDate;
     private Boolean isCurrentlyWorking;
     private String description;
+    private String username;
     // Many-to-one relationship with Profile
     @ManyToOne
     @JoinColumn(name = "profile_id")

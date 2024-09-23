@@ -22,6 +22,7 @@ public class Profile {
     private String password;
     private String avatar;
     private String address;
+    private String username;
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")

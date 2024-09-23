@@ -1,11 +1,9 @@
 package com.example.linkedinclone.service;
 
-import com.example.linkedinclone.entity.Profile;
-import com.example.linkedinclone.exception.ProfileNotFoundException;
-import com.example.linkedinclone.repository.ProfileRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.example.linkedinclone.entity.Profile;
+import com.example.linkedinclone.repository.ProfileRepository;
 
 @Service
 public class ProfileService {
@@ -13,21 +11,25 @@ public class ProfileService {
     @Autowired
     private ProfileRepository profileRepository;
 
-    // Get the profile of the current user based on the user ID
-    public Profile getProfileByUserId(Long userId) {
-        // Use findByUserId to find the user's Profile. If not found, throw ProfileNotFoundException.
-        return profileRepository.findByUserId(userId)
-                .orElseThrow(() -> new ProfileNotFoundException("Profile not found for user id: " + userId));
+    // Get the profile of the current user based on the username
+    public Profile getProfileByUsername(String username) {
+        // Use findByUsername to find the user's Profile
+        return (Profile) profileRepository.findByUsername(username);
     }
 
-
+    // Save or update a profile
     public Profile saveProfile(Profile profile) {
         return profileRepository.save(profile);
     }
 
-    public void deleteProfileByUserId(Long userId) {
-        Profile profile = getProfileByUserId(userId);
-        profileRepository.delete(profile);
-    }
 
+    // Alternative version if you delete by username instead:
+    public void deleteProfileByUsername(String username) {
+        Profile profile = getProfileByUsername(username); // Get profile by username
+        if (profile != null) {
+            profileRepository.delete(profile);
+        } else {
+            throw new RuntimeException("Profile not found for username: " + username);
+        }
+    }
 }

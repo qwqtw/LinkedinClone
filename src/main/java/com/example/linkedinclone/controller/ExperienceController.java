@@ -16,8 +16,8 @@ public class ExperienceController {
 
 
     @GetMapping("/user/{userId}")
-    public List<Experience> getUserExperiences(@PathVariable Long userId) {
-        return experienceService.getExperiencesByUserId(userId);
+    public List<Experience> getUserExperiences(@PathVariable String username) {
+        return experienceService.getExperiencesByUsername(username);
     }
 
 

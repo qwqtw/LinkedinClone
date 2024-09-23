@@ -21,19 +21,21 @@ public class ProfileController {
     @Autowired
     private UserService userService;
 
+    // ProfileController.java
+
     @GetMapping
     public String showProfile(Model model) {
-        Long currentUserId = getCurrentUserId();
-        Profile profile = profileService.getProfileByUserId(currentUserId);
+        String currentUsername = getCurrentUsername();
+        Profile profile = profileService.getProfileByUsername(currentUsername);  // Use username
         model.addAttribute("profile", profile);
-        model.addAttribute("userId", currentUserId);
+        model.addAttribute("username", currentUsername);
         return "profile";
     }
 
     @PostMapping("/update")
     public String updateProfile(@RequestParam("address") String address, Model model) {
-        Long currentUserId = getCurrentUserId();
-        Profile profile = profileService.getProfileByUserId(currentUserId);
+        String currentUsername = getCurrentUsername();
+        Profile profile = profileService.getProfileByUsername(currentUsername);  // Use username
         profile.setAddress(address);
         profileService.saveProfile(profile);
         return "redirect:/profile";
@@ -41,19 +43,18 @@ public class ProfileController {
 
     @PostMapping("/delete")
     public String deleteProfile(Model model) {
-        Long currentUserId = getCurrentUserId();
-        profileService.deleteProfileByUserId(currentUserId);
+        String currentUsername = getCurrentUsername();
+        profileService.deleteProfileByUsername(currentUsername);  // Use username
         return "redirect:/login";
     }
 
-    private Long getCurrentUserId() {
+    private String getCurrentUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
-            String username = ((UserDetails) principal).getUsername();
-            User currentUser = userService.findByUsername(username);
-            return currentUser.getId();
+            return ((UserDetails) principal).getUsername();
         } else {
             throw new RuntimeException("User not authenticated");
         }
     }
+
 }

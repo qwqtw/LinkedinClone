@@ -1,5 +1,6 @@
 package com.example.linkedinclone.controller;
 
+import com.example.linkedinclone.service.UserService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import com.example.linkedinclone.entity.User ;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.security.Principal;
+
 
 @Slf4j
 @Controller
@@ -27,6 +30,9 @@ public class UserController {
     public String login() {
         return "login"; // This should match the name of your login template
     }
+
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes) {
@@ -79,6 +85,14 @@ public class UserController {
 
             return "login";
         }
+
+    @PostMapping("/deleteAccount")
+    public String deleteAccount(Principal principal, RedirectAttributes redirectAttributes) {
+        String username = principal.getName(); // Get current username
+        userService.deleteUser(username);
+        redirectAttributes.addFlashAttribute("message", "Your account has been deleted successfully.");
+        return "redirect:/login"; // Redirect to login or home page
+    }
 
 
 

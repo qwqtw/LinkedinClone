@@ -14,8 +14,8 @@ public class ExperienceService {
     private ExperienceRepository experienceRepository;
 
 
-    public List<Experience> getExperiencesByUserId(Long userId) {
-        return experienceRepository.findByUserId(userId);
+    public List<Experience> getExperiencesByUsername(String username) {
+        return experienceRepository.findByUsername(username);  // Use username here
     }
 
 
