@@ -118,5 +118,11 @@ public class PostService {
         return false;
     }
 
+    public void deletePostsByUsername(String username) {
+        List<Post> posts = postRepository.findByUsername(username);
+        postRepository.deleteAll(posts); // Deletes all posts associated with the username
+    }
+
+
 
 }
