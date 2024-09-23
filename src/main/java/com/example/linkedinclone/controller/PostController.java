@@ -16,6 +16,7 @@ import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 import com.example.linkedinclone.repository.CommentRepository;
+import com.example.linkedinclone.repository.PostRepository;
 
 
 @RestController
@@ -30,6 +31,9 @@ public class PostController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PostRepository postRepository;
 
 
     @PostMapping
@@ -145,20 +149,45 @@ public class PostController {
     }
 
     @DeleteMapping("/{postId}/comments/{commentId}")
-    public ResponseEntity<Void> deleteComment(@PathVariable Long postId, @PathVariable Long commentId) {
-        boolean isDeleted = postService.deleteComment(postId, commentId);
-        if (isDeleted) {
-            return ResponseEntity.noContent().build();
-        } else {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<Void> deleteComment(@PathVariable Long postId, @PathVariable Long commentId, Principal principal) {
+        // Get the current logged-in user's username
+        String currentUsername = principal.getName();
+
+        // Fetch the comment and post from the repositories
+        Comment comment = commentRepository.findById(commentId).orElse(null);
+        Post post = postRepository.findById(postId).orElse(null);
+
+        // Check if the comment or post doesn't exist
+        if (comment == null || post == null) {
+            return ResponseEntity.notFound().build(); // 404 Not Found
         }
+
+        // Check if the current user is either the post owner or the comment sender
+        if (!currentUsername.equals(post.getUsername()) && !currentUsername.equals(comment.getUsername())) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
+        }
+
+        // Proceed with the deletion if authorized
+        boolean isDeleted = postService.deleteComment(postId, commentId);
+        return isDeleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
 
 
     private boolean isAdmin(String username) {
         // Logic to determine if the user is an admin
         // This could involve checking the user's role in the database
         return userService.isAdmin(username); // Implement this in your UserService
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Post> getPostById(@PathVariable Long id) {
+        Optional<Post> post = Optional.ofNullable(postService.getPostById(id));
+        if (post.isPresent()) {
+            return ResponseEntity.ok(post.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
     }
 
 

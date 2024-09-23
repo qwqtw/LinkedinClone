@@ -415,8 +415,8 @@
 
         if (!commentContent.trim()){
             alert("Comment cannot be empty!");
-            return; 
-        }// Prevent empty comments
+            return;
+        }
 
         fetch(`/posts/${postId}/comments`, {
             method: 'POST',
@@ -428,34 +428,46 @@
         })
             .then(response => response.json())
             .then(comment => {
+                // Here you can use the post object to get the username
                 const commentsSection = document.getElementById(`comments-section-${postId}`);
-                commentsSection.appendChild(createCommentElement(comment));
-                commentInput.value = ''; // Clear the input field
-                fetchComments(postId);  // Refresh comments to ensure persistence
+                // Assuming you have access to the post object when submitting
+                const post = { username: 'Post Username', avatarUrl: 'Post Avatar URL' }; // replace with the actual post data
+
+                // Directly append the created comment
+                commentsSection.appendChild(createCommentElement(comment, post));
+
+                // Clear the input field
+                commentInput.value = '';
             })
             .catch(error => console.error('Error:', error));
     }
 
 
+
     // Create comment element
-    function createCommentElement(comment, postId) {
+    function createCommentElement(comment, post) {
         var commentElement = document.createElement('div');
         commentElement.classList.add('comment', 'mt-2', 'd-flex', 'justify-content-between');
-        commentElement.setAttribute('data-id', comment.id); // Add data-id attribute
+        commentElement.setAttribute('data-id', comment.id);
+
+        console.log('Post object:', post);
+        console.log('Post Username:', post.username);
+        console.log('Comment Username:', comment.username);
 
         commentElement.innerHTML = `
-    <div class="d-flex align-items-start">
-        <img src="${comment.avatarUrl}" alt="User Image" class="rounded-circle me-2" width="32" height="32" />
-        <div class="flex-grow-1">
-            <h6 class="mb-0">${comment.username}</h6>
-            <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
-            <p>${comment.content}</p>
+        <div class="d-flex align-items-start">
+            <img src="${comment.avatarUrl}" alt="User Image" class="rounded-circle me-2" width="32" height="32" />
+            <div class="flex-grow-1">
+                <h6 class="mb-0">${comment.username}</h6>
+                <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
+                <p>${comment.content}</p>
+            </div>
         </div>
-    </div>
-    <button class="btn btn-link text-danger" onclick="deleteComment(${postId}, ${comment.id})">Delete</button>
+        ${comment.username === currentUser || post.username === currentUser ? `<button class="btn btn-link text-danger" onclick="deleteComment(${post.id}, ${comment.id})">Delete</button>` : ''}
     `;
         return commentElement;
     }
+
 
 
 
@@ -497,10 +509,13 @@
         const commentsSection = document.getElementById(`comments-section-${postId}`);
         commentsSection.innerHTML = '';  // Clear existing comments before adding
 
-        comments.forEach(comment => {
-            commentsSection.appendChild(createCommentElement(comment, postId));  // Pass postId
-        });
+        // Fetch the post data to get the username
+        const postResponse = await fetch(`/posts/${postId}`);
+        const post = await postResponse.json();
 
+        comments.forEach(comment => {
+            commentsSection.appendChild(createCommentElement(comment, post));  // Pass post object
+        });
     }
 
 
