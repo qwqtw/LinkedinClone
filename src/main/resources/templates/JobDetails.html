@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head th:replace="~{fragments/head :: head(title='Home')}"></head>
+
+<!-- Quill CSS -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<style>
+    .job-container {
+        max-width: 950px;
+        margin: 0 auto;
+    }
+</style>
+<body>
+<!-- Include the navbar -->
+<div th:replace="fragments/navbar :: navbar"></div>
+<div class="container job-container mt-4">
+    <h2>Job Details</h2>
+    <!-- Card to display job details -->
+    <div class="card">
+        <div class="card-body">
+            <h5 th:text="${job.title}">Job Title</h5>
+            <p th:text="'Company: ' + ${job.recruiter.companyName}">Company</p>
+            <p th:text="'Location: ' + ${job.location}">Location</p>
+            <p th:text="'Description: ' + ${job.description}">Description</p>
+            <!-- Apply button to open the modal -->
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#applyModal">
+                Apply
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Apply Modal (Bootstrap modal for job application form) -->
+<div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal header with title and close button -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="applyModalLabel">Apply for Job</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Modal body with file upload form -->
+            <div class="modal-body">
+                <!-- Form to upload resume -->
+                <form th:action="@{/jobs/apply(jobId=${job.id})}" method="post" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="resume" class="form-label">Upload Your Resume</label>
+                        <input type="file" class="form-control" id="resume" name="resume" accept=".pdf,.doc,.docx" required>
+                        <div class="form-text">Only .pdf, .doc, or .docx files are accepted.</div>
+                    </div>
+                    <!-- Submit button for the form -->
+                    <button type="submit" class="btn btn-primary">Submit Application</button>
+                </form>
+            </div>
+            <!-- Modal footer with close button -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS and dependencies (include if not already included) -->
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybHH2jq4b9yw5Zy7y3hi9IEb/j6/RURvMd0mV9IsDb8xgF4Nx" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-7yC+GDIvDMTvY1IWJ6bSBcb3nI0M+P5VprO/1W78h8BQk98AdhXlEFXckO09q5HRT" crossorigin="anonymous"></script>
+</body>
+</html>
