@@ -149,8 +149,12 @@
         }
     });
 
-    const currentUser = /*[[${currentUser}]]*/ '';
+    const currentUser = /*[[${currentUser}]]*/ { username: '', role: '' };
+    const user = /*[[${user}]]*/  '';
+
     console.log('Current User from Thymeleaf:', currentUser);
+    console.log('Current User role:', currentUser.role);
+    console.log('Current User role:', user.role);
 
     // Fetch existing posts on page load
     window.addEventListener('DOMContentLoaded', (event) => {
@@ -206,6 +210,7 @@
         // Debugging: Check the values
         console.log('Post Username:', post.username);
         console.log('Current User:', currentUser);
+        console.log('Current User role:', currentUser.role);
 
         const initialLikesCount = post.likesCount || 0;
         var formattedCreatedAt = formatDateTime(post.createdAt);
@@ -226,12 +231,12 @@
                     <small class="text-muted">${formattedCreatedAt}<i class="bi bi-globe-americas"></i></small>
                 </div>
                 <div class="ms-auto dropdown">
-                    ${post.username === currentUser ? `<button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    ${post.username === currentUser || user.role === 'admin' ? `<button class="btn btn-link text-muted dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                         <span class="material-symbols-outlined">more_horiz</span>
                     </button>
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
 
-                            <li><a class="dropdown-item" href="#" onclick="editPost('${post.id}', \`${escapedContent}\`)"><span class="material-symbols-outlined">edit</span>Edit</a></li>
+                           ${post.username === currentUser ? `<li><a class="dropdown-item" href="#" onclick="editPost('${post.id}', \`${escapedContent}\`)"><span class="material-symbols-outlined">edit</span>Edit</a></li>` : ''}
                             <li><a class="dropdown-item" href="#" onclick="deletePost('${post.id}')"><span class="material-symbols-outlined">delete</span>Delete</a></li>
                         ` : ''}
                     </ul>
@@ -465,7 +470,7 @@
             <p>${comment.content}</p>
         </div>
     </div>
-    ${comment.username === currentUser || post.username === currentUser ? `<button class="btn btn-link text-danger" onclick="deleteComment(${post.id}, ${comment.id})">Delete</button>` : ''}
+    ${comment.username === currentUser || post.username === currentUser || user.role === 'admin' ? `<button class="btn btn-link text-danger" onclick="deleteComment(${post.id}, ${comment.id})">Delete</button>` : ''}
     `;
         return commentElement;
     }

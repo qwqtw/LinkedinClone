@@ -39,6 +39,7 @@ public class HomeController {
         User user = userService.findByUsername(principal.getName());
         List<Post> posts = postRepository.findAll();
         model.addAttribute("currentUser", user.getUsername());
+        model.addAttribute("userRole", user.getRole()); // Add user role to model
 
         for (Post post : posts) {
             List<Comment> comments = commentRepository.findByPostId(post.getId());
@@ -55,6 +56,7 @@ public class HomeController {
 
         return "index";
     }
+
 
 
 

@@ -1,8 +1,11 @@
 package com.example.linkedinclone.securingweb;
 
 import java.util.Collection;
+import java.util.Collections;
+
 import com.example.linkedinclone.entity.User;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // This class enables Spring Security to understand how to retrieve and verify user credentials during the login process
@@ -16,7 +19,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        // Return a collection of GrantedAuthority based on the user's role
+        return Collections.singletonList(new SimpleGrantedAuthority(user.getRole()));
     }
 
     public User getUser() {
