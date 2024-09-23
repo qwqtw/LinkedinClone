@@ -72,7 +72,7 @@ public class JobController {
         Optional<Job> jobOpt = jobService.findJobById(id);
         // Add the job details to the model
         model.addAttribute("job", jobOpt);
-        return "applyJob";
+        return "jobDetail";
     }
 
     // Handle job application form submission
