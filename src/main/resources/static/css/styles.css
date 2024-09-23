@@ -186,3 +186,25 @@ body {
 .dropdown-toggle::after {
     display: none;
 }
+
+/* jobs page */
+/* set container width and centered */
+    .job-container {
+        max-width: 950px;
+        margin: 0 auto;
+    }
+    .search-results {
+        width: 100%;
+        margin-top: 20px;
+    }
+    .btn-info {
+        margin-left: auto;
+    }
+    /*button style*/
+    .btn-info {
+        font-size: 16px;
+        color: white;
+        background-color: #007bbb;
+        border: none;
+        border-radius: 4px;
+    }
