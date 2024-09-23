@@ -8,6 +8,7 @@ import com.example.linkedinclone.repository.LikeRepository;
 import com.example.linkedinclone.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.example.linkedinclone.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -24,12 +25,16 @@ public class PostService {
     @Autowired
     private CommentRepository commentRepository;
 
+    @Autowired
+    private UserService userService;
+
     public Post savePost(Post post) {
         return postRepository.save(post);
     }
 
-    public Post updatePost(Long id, String content) {
+    public Post updatePost(Long id, String content, String username) {
         return postRepository.findById(id)
+                .filter(post -> post.getUsername().equals(username))  // Check if the user is the owner
                 .map(post -> {
                     post.setContent(content);
                     return postRepository.save(post);
@@ -45,21 +50,19 @@ public class PostService {
         return postRepository.findByUsername(username);
     }
 
-    public boolean deletePost(Long id) {
-        if (postRepository.existsById(id)) {
-            // Delete associated comments
-            List<Comment> comments = commentRepository.findByPostId(id);
-            commentRepository.deleteAll(comments);
+    public Post getPostById(Long id) {
+        Optional<Post> postOptional = postRepository.findById(id);
+        return postOptional.orElse(null); // Return null if not found
+    }
 
-            // Delete associated likes
-            List<Like> likes = likeRepository.findByPostId(id);
-            likeRepository.deleteAll(likes);
-
-            // Finally delete the post
-            postRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public boolean deletePost(Long id, String username) {
+        return postRepository.findById(id)
+                .filter(post -> post.getUsername().equals(username) || userService.isAdmin(username)) // Check ownership or admin
+                .map(post -> {
+                    postRepository.delete(post);
+                    return true;
+                })
+                .orElse(false);
     }
 
 

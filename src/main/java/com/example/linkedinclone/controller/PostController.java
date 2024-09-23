@@ -6,10 +6,13 @@ import com.example.linkedinclone.service.PostService;
 import com.example.linkedinclone.service.UserService;
 import com.example.linkedinclone.dto.PostUpdateRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+
+import java.security.Principal;
 import java.time.LocalDateTime;
 import java.util.*;
 import com.example.linkedinclone.repository.CommentRepository;
@@ -65,14 +68,17 @@ public class PostController {
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable("id") Long id, @RequestBody PostUpdateRequest updateRequest) {
-        Post updatedPost = postService.updatePost(id, updateRequest.getContent());
-        if (updatedPost != null) {
-            return ResponseEntity.ok(updatedPost);  // Return updated post
-        } else {
-            return ResponseEntity.notFound().build();  // Handle post not found case
+    public ResponseEntity<Post> updatePost(@PathVariable("id") Long id, @RequestBody PostUpdateRequest updateRequest, Principal principal) {
+        String username = principal.getName();
+        Post post = postService.getPostById(id); // You may need to implement this method
+
+        // Check if the user is the owner of the post or an admin
+        if (post == null || (!post.getUsername().equals(username) && !isAdmin(username))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
 
+        Post updatedPost = postService.updatePost(id, updateRequest.getContent(), username);
+        return ResponseEntity.ok(updatedPost);
     }
 
     @GetMapping
@@ -82,14 +88,19 @@ public class PostController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id) {
-        boolean isDeleted = postService.deletePost(id);
-        if (isDeleted) {
-            return ResponseEntity.noContent().build(); // Return 204 No Content if successful
-        } else {
-            return ResponseEntity.notFound().build(); // Return 404 Not Found if the post doesn't exist
+    public ResponseEntity<Void> deletePost(@PathVariable("id") Long id, Principal principal) {
+        String username = principal.getName();
+        Post post = postService.getPostById(id); // Implement this method
+
+        // Check if the user is the owner of the post or an admin
+        if (post == null || (!post.getUsername().equals(username) && !isAdmin(username))) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build(); // 403 Forbidden
         }
+
+        boolean isDeleted = postService.deletePost(id, username);
+        return isDeleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
+
 
     @PostMapping("/{postId}/likes")
     public ResponseEntity<Void> likePost(@PathVariable Long postId) {
@@ -143,6 +154,12 @@ public class PostController {
         }
     }
 
+
+    private boolean isAdmin(String username) {
+        // Logic to determine if the user is an admin
+        // This could involve checking the user's role in the database
+        return userService.isAdmin(username); // Implement this in your UserService
+    }
 
 
 

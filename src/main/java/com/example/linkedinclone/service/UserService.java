@@ -32,4 +32,9 @@ public class UserService {
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
+
+    public boolean isAdmin(String username) {
+        User user = userRepository.findByUsername(username);
+        return user != null && "admin".equals(user.getRole());
+    }
 }

@@ -32,25 +32,30 @@ public class HomeController {
 
     @GetMapping("/home")
     public String home(HttpServletRequest request, Model model, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login"; // Redirect to login if not authenticated
+        }
+
         User user = userService.findByUsername(principal.getName());
         List<Post> posts = postRepository.findAll();
+        model.addAttribute("currentUser", user.getUsername());
 
         for (Post post : posts) {
             List<Comment> comments = commentRepository.findByPostId(post.getId());
             post.setComments(comments);
 
-            // Add this check to see if the user has liked the post
             boolean userHasLiked = likeRepository.findByPostIdAndUsername(post.getId(), user.getUsername()).isPresent();
-            post.setUserHasLiked(userHasLiked); // Add this field to your Post entity
-
-            post.setLikesCount(likeRepository.countByPostId(post.getId())); // Update like count
+            post.setUserHasLiked(userHasLiked);
+            post.setLikesCount(likeRepository.countByPostId(post.getId()));
         }
 
         model.addAttribute("user", user);
         model.addAttribute("currentURI", request.getRequestURI());
         model.addAttribute("posts", posts);
+
         return "index";
     }
+
 
 
 
