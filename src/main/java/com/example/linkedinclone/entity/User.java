@@ -13,7 +13,6 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-
 @Table(name = "users")
 public class User {
 
@@ -28,9 +27,8 @@ public class User {
     private String username;
 
     @NotBlank(message="Email is required")
-    @Column(unique = true, length = 150) // FIXME: 320
+    @Column(unique = true, length = 150)
     private String email;
-
 
     @NotBlank(message="Password is required")
     @Size(min = 6, max = 100, message= "Password must contain between {min} and {max} characters")
@@ -42,10 +40,21 @@ public class User {
     @Transient
     private String password2;
 
+
+    @NotBlank(message="First name is required")
+    private String firstName;
+
+    @NotBlank(message="Last name is required")
+    private String lastName;
+
     @Pattern(regexp = "user|recruiter|admin", message = "Role must be either 'user', 'recruiter', or 'admin'")
     private String role;
 
-
-
+    // Optional fields
+    private String skills; // Can store as a comma-separated string or use a Set for more structure
+    private String workExperience; // Could also be a more structured entity
+    private String education; // Same as above, can be structured as needed
+    private String avatar_url;
 }
+
 
