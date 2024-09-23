@@ -231,6 +231,14 @@ not yet, will keep upload
 - keep working on the connection page
 - start working on the profile page as well
 3. Need assistance / figure things out
--
 
 -----------------------------------------------------------------------------------
+2024/09/23 Kejia
+1. Done since last scrum
+- part of recommended jobs
+- part of profile(create entities, modal of edu/exp/skill)
+2. Plan until next Scrum
+- job searching result using modal
+- start to work on recruiter/jobs
+3. Need assistance / figure things out
+- not yet
