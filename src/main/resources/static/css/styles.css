@@ -18,7 +18,9 @@ body {
     background-color: #f9f9f9; /* Light background color */
     margin-bottom: 10px; /* Spacing between comments */
 }
-
+.comment img {
+    margin-top: 0.3rem; /* Space between avatar and text */
+}
 .comment h6 {
     font-weight: bold; /* Bold username */
     margin-bottom: 5px; /* Spacing below the username */

@@ -450,23 +450,26 @@
         commentElement.classList.add('comment', 'mt-2', 'd-flex', 'justify-content-between');
         commentElement.setAttribute('data-id', comment.id);
 
-        console.log('Post object:', post);
-        console.log('Post Username:', post.username);
-        console.log('Comment Username:', comment.username);
+        // Set a default avatar URL
+        const defaultAvatarUrl = '/images/avatar.jpg';
+
+        // Use the default avatar if avatarUrl is not set
+        const avatarUrl = comment.avatarUrl || defaultAvatarUrl;
 
         commentElement.innerHTML = `
-        <div class="d-flex align-items-start">
-            <img src="${comment.avatarUrl}" alt="User Image" class="rounded-circle me-2" width="32" height="32" />
-            <div class="flex-grow-1">
-                <h6 class="mb-0">${comment.username}</h6>
-                <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
-                <p>${comment.content}</p>
-            </div>
+    <div class="d-flex align-items-start">
+        <img src="${avatarUrl}" alt="User Image" class="rounded-circle me-2" width="32" height="32" />
+        <div class="flex-grow-1">
+            <h6 class="mb-0">${comment.username}</h6>
+            <small class="text-muted">${formatDateTime(comment.createdAt)}</small>
+            <p>${comment.content}</p>
         </div>
-        ${comment.username === currentUser || post.username === currentUser ? `<button class="btn btn-link text-danger" onclick="deleteComment(${post.id}, ${comment.id})">Delete</button>` : ''}
+    </div>
+    ${comment.username === currentUser || post.username === currentUser ? `<button class="btn btn-link text-danger" onclick="deleteComment(${post.id}, ${comment.id})">Delete</button>` : ''}
     `;
         return commentElement;
     }
+
 
 
 
