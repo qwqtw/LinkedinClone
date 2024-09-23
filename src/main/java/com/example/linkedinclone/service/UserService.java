@@ -43,13 +43,12 @@ public class UserService {
         User user = userRepository.findByUsername(username);
         if (user != null) {
             System.out.println("Deleting user: " + user.getUsername());
-            // Optional: delete related data
-            // postRepository.deleteByUserId(user.getId());
             userRepository.delete(user);
         } else {
             System.out.println("User not found for username: " + username);
         }
     }
+
 
 
 }
