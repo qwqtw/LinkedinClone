@@ -17,9 +17,11 @@
                 <img src="/images/avatar.jpg" class="card-img-top rounded-circle mx-auto d-block mt-3" style="width: 100px;" alt="Profile Avatar">
                 <div class="card-body text-center">
                     <h5 class="card-title" th:text="${currentUser}">Your Name</h5>
-<!--                    <p class="card-text" th:text="${user.jobTitle}">Your basic information (e.g., job title, location)</p>-->
-                    <a th:href="@{/profile}" class="btn btn-primary btn-sm">View Profile</a>
+                    <a th:href="${user.role == 'admin' ? '/admin' : '/profile'}"
+                       class="btn btn-primary btn-sm"
+                       th:text="${user.role == 'admin' ? 'View Admin Board' : 'View Profile'}">View Profile</a>
                 </div>
+
             </div>
             <div class="card mt-3">
                 <div class="card-body">
