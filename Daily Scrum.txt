@@ -242,3 +242,13 @@ not yet, will keep upload
 - start to work on recruiter/jobs
 3. Need assistance / figure things out
 - not yet
+
+2024/09/23 Qiutian
+1. Done since last scrum
+- set up admin account and permission
+- permission for post edit/delete and comment delete
+2. Plan until next Scrum
+- account delete
+- admin dashboard
+3. Need assistance / figure things out
+- account delete
