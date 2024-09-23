@@ -8,6 +8,7 @@ import com.example.linkedinclone.repository.UserRepository ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,10 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
 
     @PostMapping("/login")
     public String login(@RequestParam String username, @RequestParam String password, RedirectAttributes redirectAttributes) {
@@ -93,6 +98,49 @@ public class UserController {
         redirectAttributes.addFlashAttribute("message", "Your account has been deleted successfully.");
         return "redirect:/login"; // Redirect to login or home page
     }
+
+    @PostMapping("/changeUsername")
+    public String changeUsername(@RequestParam String newUsername, Principal principal, RedirectAttributes redirectAttributes) {
+        String currentUsername = principal.getName();
+        User user = userService.findByUsername(currentUsername);
+
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found.");
+            return "redirect:/login";
+        }
+
+        if (userService.findByUsername(newUsername) != null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Username already exists.");
+            return "redirect:/login";
+        }
+
+        user.setUsername(newUsername);
+        userService.save(user); // Ensure this method exists
+
+        redirectAttributes.addFlashAttribute("successMessage", "Username changed successfully.");
+        return "redirect:/login";
+    }
+
+    @PostMapping("/changePassword")
+    public String changePassword(@RequestParam String newPassword, @RequestParam String confirmPassword, Principal principal, RedirectAttributes redirectAttributes) {
+        User user = userService.findByUsername(principal.getName());
+        if (user == null) {
+            redirectAttributes.addFlashAttribute("errorMessage", "User not found.");
+            return "redirect:/login";
+        }
+
+        if (!newPassword.equals(confirmPassword)) {
+            redirectAttributes.addFlashAttribute("errorMessage", "Passwords do not match.");
+            return "redirect:/login";
+        }
+
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepo.save(user);
+        redirectAttributes.addFlashAttribute("successMessage", "Password changed successfully.");
+        return "redirect:/login";
+    }
+
+
 
 
 

@@ -37,6 +37,12 @@ public class HomeController {
         }
 
         User user = userService.findByUsername(principal.getName());
+        if (user == null) {
+            // Handle the case where the user could not be found
+            model.addAttribute("error", "User not found.");
+            return "error"; // Redirect to an error page or handle it accordingly
+        }
+
         List<Post> posts = postRepository.findAll();
         model.addAttribute("currentUser", user.getUsername());
         model.addAttribute("userRole", user.getRole()); // Add user role to model
