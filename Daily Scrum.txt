@@ -223,4 +223,14 @@ not yet, will keep upload
 - start to work on recruiter/jobs
 3. Need assistance / figure things out
 - not yet
+
+2024/09/22 Tao Wang
+1. Done since last scrum
+- connect page setup almost finish, but still not functional
+2. Plan until next Scrum
+- keep working on the connection page
+- start working on the profile page as well
+3. Need assistance / figure things out
+-
+
 -----------------------------------------------------------------------------------
