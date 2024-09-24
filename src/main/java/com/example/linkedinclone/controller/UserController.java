@@ -7,6 +7,7 @@ import com.example.linkedinclone.entity.User ;
 import com.example.linkedinclone.repository.UserRepository ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -15,9 +16,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
+import java.util.HashMap;
+import java.util.Map;
 
 
 @Slf4j
@@ -100,44 +104,50 @@ public class UserController {
     }
 
     @PostMapping("/changeUsername")
-    public String changeUsername(@RequestParam String newUsername, Principal principal, RedirectAttributes redirectAttributes) {
+    @ResponseBody // This will make it return JSON
+    public ResponseEntity<Map<String, String>> changeUsername(@RequestParam String newUsername, Principal principal) {
         String currentUsername = principal.getName();
         User user = userService.findByUsername(currentUsername);
+        Map<String, String> response = new HashMap<>();
 
         if (user == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "User not found.");
-            return "redirect:/login";
+            response.put("errorMessage", "User not found.");
+            return ResponseEntity.badRequest().body(response);
         }
 
         if (userService.findByUsername(newUsername) != null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Username already exists.");
-            return "redirect:/login";
+            response.put("errorMessage", "Username already exists.");
+            return ResponseEntity.badRequest().body(response);
         }
 
         user.setUsername(newUsername);
         userService.save(user); // Ensure this method exists
 
-        redirectAttributes.addFlashAttribute("successMessage", "Username changed successfully.");
-        return "redirect:/login";
+        response.put("successMessage", "Username changed successfully.");
+        return ResponseEntity.ok(response);
     }
 
+
     @PostMapping("/changePassword")
-    public String changePassword(@RequestParam String newPassword, @RequestParam String confirmPassword, Principal principal, RedirectAttributes redirectAttributes) {
+    @ResponseBody // This will make it return JSON
+    public ResponseEntity<Map<String, String>> changePassword(@RequestParam String newPassword, @RequestParam String confirmPassword, Principal principal) {
         User user = userService.findByUsername(principal.getName());
+        Map<String, String> response = new HashMap<>();
+
         if (user == null) {
-            redirectAttributes.addFlashAttribute("errorMessage", "User not found.");
-            return "redirect:/login";
+            response.put("errorMessage", "User not found.");
+            return ResponseEntity.badRequest().body(response);
         }
 
         if (!newPassword.equals(confirmPassword)) {
-            redirectAttributes.addFlashAttribute("errorMessage", "Passwords do not match.");
-            return "redirect:/login";
+            response.put("errorMessage", "Passwords do not match.");
+            return ResponseEntity.badRequest().body(response);
         }
 
         user.setPassword(passwordEncoder.encode(newPassword));
         userRepo.save(user);
-        redirectAttributes.addFlashAttribute("successMessage", "Password changed successfully.");
-        return "redirect:/login";
+        response.put("successMessage", "Password changed successfully.");
+        return ResponseEntity.ok(response);
     }
 
 
