@@ -1,6 +1,7 @@
 package com.example.linkedinclone.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.Setter;
 
 
@@ -10,17 +11,21 @@ import java.time.LocalDateTime;
 @Table(name = "connection")
 public class Connect {
 
+    // Getters and setters
+    @Getter
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     // The user who send the connection request
+    @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     // The user who receives the connection request
+    @Getter
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "receiver_id", nullable = false)
@@ -31,6 +36,7 @@ public class Connect {
     private String status;
 
     // Timestamp when the connection was created
+    @Getter
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
@@ -53,34 +59,11 @@ public class Connect {
         this.updatedAt = LocalDateTime.now();
     }
 
-    // Getters and setters
-    public Long getId() {
-        return id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public User getReceiver() {
-        return receiver;
-    }
-
-    public String getStatus() {
-        return status;
-    }
 
     public void setStatus(String status) {
         this.status = status;
         this.updatedAt = LocalDateTime.now();
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
-    }
 
 }

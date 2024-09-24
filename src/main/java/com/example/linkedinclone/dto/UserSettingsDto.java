@@ -22,6 +22,4 @@ public class UserSettingsDto {
     private String password2; // Optional confirmation password
 
 
-
-    // Getters and setters
 }

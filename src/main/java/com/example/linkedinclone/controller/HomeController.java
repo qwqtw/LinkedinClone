@@ -63,11 +63,6 @@ public class HomeController {
         return "index";
     }
 
-
-
-
-
-
     @GetMapping("/network")
     public String network(HttpServletRequest request, Model model) {
         model.addAttribute("currentURI", request.getRequestURI());

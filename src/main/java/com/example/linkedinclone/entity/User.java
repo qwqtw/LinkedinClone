@@ -50,14 +50,7 @@ public class User {
     @Pattern(regexp = "user|recruiter|admin", message = "Role must be either 'user', 'recruiter', or 'admin'")
     private String role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private Profile profile;
 
-    // Optional fields
-    private String skills; // Can store as a comma-separated string or use a Set for more structure
-    private String workExperience; // Could also be a more structured entity
-    private String education; // Same as above, can be structured as needed
-    private String avatar_url;
 }
 
 

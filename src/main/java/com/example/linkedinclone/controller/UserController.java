@@ -6,8 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.example.linkedinclone.entity.User ;
 import com.example.linkedinclone.repository.UserRepository ;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -16,12 +14,9 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 
 
 @Slf4j
@@ -40,7 +35,7 @@ public class UserController {
     @GetMapping("/login")
     public String login(Model model, RedirectAttributes redirectAttributes) {
         model.addAttribute("user", new User());
-        return "login"; // This should match the name of your login template
+        return "login";
     }
 
 

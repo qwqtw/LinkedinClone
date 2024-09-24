@@ -14,10 +14,6 @@ public class JobService {
     @Autowired
     private JobRepository jobRepository;
 
-    public void saveJob(Job job) {
-        jobRepository.save(job);
-    }
-
     // Get all the jobs
     public List<Job> getAllJobs() {
         return jobRepository.findAll();

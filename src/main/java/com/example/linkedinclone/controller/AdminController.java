@@ -42,25 +42,25 @@ public class AdminController {
         model.addAttribute("users", users);
         model.addAttribute("posts", posts);
         model.addAttribute("comments", comments);
-        return "adminBoard"; // Create an adminBoard.html template
+        return "adminBoard";
     }
 
     @PostMapping("/users/delete")
     public String deleteUser(@RequestParam String username) {
         userService.deleteUser(username);
-        return "redirect:/admin"; // Redirect back to the admin board
+        return "redirect:/admin";
     }
 
     @PostMapping("/posts/delete")
     public String deletePost(@RequestParam Long postId) {
         postRepository.deleteById(postId);
-        return "redirect:/admin"; // Redirect back to the admin board
+        return "redirect:/admin";
     }
 
     @PostMapping("/comments/delete")
     public String deleteComment(@RequestParam Long commentId) {
         commentRepository.deleteById(commentId);
-        return "redirect:/admin"; // Redirect back to the admin board
+        return "redirect:/admin";
     }
 
 }

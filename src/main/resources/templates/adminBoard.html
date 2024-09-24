@@ -13,7 +13,7 @@
         <thead>
         <tr>
             <th>Username</th>
-            <th>Email</th> <!-- Added Email column -->
+            <th>Email</th>
             <th>Role</th>
             <th>Action</th>
         </tr>
@@ -22,7 +22,7 @@
         <tr th:each="user : ${users}">
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
-            <td th:text="${user.role}"></td> <!-- Display user's email -->
+            <td th:text="${user.role}"></td>
             <td>
                 <form th:action="@{/admin/users/delete}" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" th:value="${user.username}" name="username"/>
@@ -39,7 +39,7 @@
         <tr>
             <th>Content</th>
             <th>Username</th>
-            <th>Created time</th><!-- Added Username column -->
+            <th>Created time</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -47,7 +47,7 @@
         <tr th:each="post : ${posts}">
             <td th:text="${post.content}"></td>
             <td th:text="${post.username}"></td>
-            <td th:text="${post.createdAt}"></td><!-- Display the username associated with the post -->
+            <td th:text="${post.createdAt}"></td>
             <td>
                 <form th:action="@{/admin/posts/delete}" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" th:value="${post.id}" name="postId"/>
@@ -64,7 +64,7 @@
         <tr>
             <th>Content</th>
             <th>Username</th>
-            <th>Created time</th> <!-- Added Username column -->
+            <th>Created time</th>
             <th>Action</th>
         </tr>
         </thead>
@@ -72,7 +72,7 @@
         <tr th:each="comment : ${comments}">
             <td th:text="${comment.content}"></td>
             <td th:text="${comment.username}"></td>
-            <td th:text="${comment.createdAt}"></td><!-- Display the username associated with the comment -->
+            <td th:text="${comment.createdAt}"></td>
             <td>
                 <form th:action="@{/admin/comments/delete}" method="post" onsubmit="return confirmDelete();">
                     <input type="hidden" th:value="${comment.id}" name="commentId"/>

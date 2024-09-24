@@ -8,7 +8,6 @@ import com.example.linkedinclone.repository.LikeRepository;
 import com.example.linkedinclone.repository.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.example.linkedinclone.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -44,10 +43,6 @@ public class PostService {
 
     public List<Post> getAllPosts() {
         return postRepository.findAll();
-    }
-
-    public List<Post> getPostsByUsername(String username) {
-        return postRepository.findByUsername(username);
     }
 
     public Post getPostById(Long id) {

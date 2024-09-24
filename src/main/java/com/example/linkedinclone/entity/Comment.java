@@ -26,5 +26,4 @@ public class Comment {
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
 
-    // Getters and setters...
 }

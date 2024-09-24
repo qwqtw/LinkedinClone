@@ -1,11 +1,9 @@
 package com.example.linkedinclone.service;
 
 import com.example.linkedinclone.dto.UserSettingsDto;
-import com.example.linkedinclone.entity.Post;
 import com.example.linkedinclone.entity.User;
 import com.example.linkedinclone.repository.CommentRepository;
 import com.example.linkedinclone.repository.LikeRepository;
-import com.example.linkedinclone.repository.PostRepository;
 import com.example.linkedinclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
@@ -24,8 +22,6 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private PostRepository postRepository;
 
     @Autowired
     private LikeRepository likeRepository;
@@ -36,20 +32,6 @@ public class UserService {
     @Autowired
     @Lazy
     private PostService postService;
-
-
-    @Transactional
-    public boolean registerUser(User user) {
-        // Check for existing user
-        if (userRepository.findByUsername(user.getUsername()) != null) {
-            return false; // User already exists
-        }
-
-        // Encode the password
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return true; // Registration successful
-    }
 
     // New method to find user by username
     public User findByUsername(String username) {
@@ -82,13 +64,9 @@ public class UserService {
         }
     }
 
-    @Transactional
-    public User save(User user) {
-        return userRepository.save(user);
-    }
 
     public List<User> findAllUsers() {
-        return userRepository.findAll(); // Adjust if your repository has a different method
+        return userRepository.findAll();
     }
 
 
