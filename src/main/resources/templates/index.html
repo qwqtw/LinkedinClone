@@ -20,27 +20,27 @@
                     <small class="text-muted mb-3" th:text="${user.username}">Your Username</small><br>
                     <a th:href="${user.role == 'admin' ? '/admin' : '/settings'}"
                        class="btn btn-primary btn-sm mt-2"
-                       th:text="${user.role == 'admin' ? 'View Admin Board' : 'Modify User Details'}">Modify User Details</a>
+                       th:text="${user.role == 'admin' ? 'View Admin Board' : 'Settings'}">Settings</a>
                 </div>
 
 
             </div>
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="card-title">Connections</h5>
-                    <ul class="list-group list-group-flush">
-<!--                        <li class="list-group-item" th:each="connection : ${connections}" th:text="${connection.name}">John Doe</li>-->
-                    </ul>
-                </div>
-            </div>
-            <div class="card mt-3">
-                <div class="card-body">
-                    <h5 class="card-title">Suggested Jobs</h5>
-                    <ul class="list-group list-group-flush">
-<!--                        <li class="list-group-item" th:each="job : ${suggestedJobs}" th:text="${job.title}">Software Engineer at XYZ</li>-->
-                    </ul>
-                </div>
-            </div>
+<!--            <div class="card mt-3">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Connections</h5>-->
+<!--                    <ul class="list-group list-group-flush">-->
+<!--&lt;!&ndash;                        <li class="list-group-item" th:each="connection : ${connections}" th:text="${connection.name}">John Doe</li>&ndash;&gt;-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="card mt-3">-->
+<!--                <div class="card-body">-->
+<!--                    <h5 class="card-title">Suggested Jobs</h5>-->
+<!--                    <ul class="list-group list-group-flush">-->
+<!--&lt;!&ndash;                        <li class="list-group-item" th:each="job : ${suggestedJobs}" th:text="${job.title}">Software Engineer at XYZ</li>&ndash;&gt;-->
+<!--                    </ul>-->
+<!--                </div>-->
+<!--            </div>-->
         </div>
 
         <!-- Right Section: Post Writing -->
