@@ -12,6 +12,8 @@
 <div th:replace="fragments/navbar :: navbar"></div>
 
 <div class="container job-container mt-4">
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
     <h2>Find your next job</h2>
     <!-- Job search form, allowing users to search by keyword -->
     <form action="/jobs/search" method="get" class="form-inline">

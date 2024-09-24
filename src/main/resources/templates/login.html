@@ -7,7 +7,9 @@
         <h2 class="text-center mb-3">Login</h2>
 
         <!-- Display error message if present -->
-        <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+        <div th:if="${error}" class="alert alert-danger"  th:text="${error}"></div>
+        <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+
 
 
 
