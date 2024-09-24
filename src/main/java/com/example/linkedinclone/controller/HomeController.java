@@ -74,9 +74,4 @@ public class HomeController {
         return "network";
     }
 
-    @GetMapping("/jobs")
-    public String jobs(HttpServletRequest request, Model model) {
-        model.addAttribute("currentURI", request.getRequestURI());
-        return "jobs";
-    }
 }
