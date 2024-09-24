@@ -8,5 +8,5 @@ import java.util.*;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    List<Post> findByUsername(String username);  // New method
+    List<Post> findByUsername(String username);
 }

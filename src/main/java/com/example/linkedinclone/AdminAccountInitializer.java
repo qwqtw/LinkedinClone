@@ -1,20 +1,20 @@
 package com.example.linkedinclone;
 
 import com.example.linkedinclone.entity.User;
-import com.example.linkedinclone.repository.UserRepository; // Ensure you have this repository
+import com.example.linkedinclone.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
-import org.springframework.security.crypto.password.PasswordEncoder; // If you're using Spring Security for password encoding
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Component
 public class AdminAccountInitializer implements CommandLineRunner {
 
     @Autowired
-    private UserRepository userRepository; // Inject your user repository
+    private UserRepository userRepository;
 
     @Autowired
-    private PasswordEncoder passwordEncoder; // Inject password encoder if using Spring Security
+    private PasswordEncoder passwordEncoder;
 
     @Override
     public void run(String... args) throws Exception {

@@ -424,7 +424,7 @@
                 // Here you can use the post object to get the username
                 const commentsSection = document.getElementById(`comments-section-${postId}`);
                 // Assuming you have access to the post object when submitting
-                const post = { username: 'Post Username', avatarUrl: 'Post Avatar URL' }; // replace with the actual post data
+                const post = { username: 'Post Username', avatarUrl: 'Post Avatar URL' };
 
                 // Directly append the created comment
                 commentsSection.appendChild(createCommentElement(comment, post));
@@ -488,8 +488,7 @@
             .then(response => {
                 if (!response.ok) {
                     console.error('Error deleting comment:', response.status);
-                    // If there was an error, you might want to re-add the comment
-                    // You can also show an error message to the user
+
                 }
             })
             .catch(error => console.error('Error:', error));

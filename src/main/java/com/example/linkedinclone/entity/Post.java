@@ -36,11 +36,11 @@ public class Post {
     private long likesCount = 0;
 
     @Transient // Make sure this isn't persisted in the database
-    private boolean userHasLiked; // Add this field
+    private boolean userHasLiked;
 
     public Post(String content, String username) {
         this.content = content;
-        this.username = username;  // Initialize with username
+        this.username = username;
         this.createdAt = LocalDateTime.now();
     }
 
