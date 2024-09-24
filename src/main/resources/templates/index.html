@@ -16,11 +16,13 @@
             <div class="card">
                 <img src="/images/avatar.jpg" class="card-img-top rounded-circle mx-auto d-block mt-3" style="width: 100px;" alt="Profile Avatar">
                 <div class="card-body text-center">
-                    <h5 class="card-title" th:text="${currentUser}">Your Name</h5>
+                    <h5 class="card-title mb-1" th:text="${user.firstName} + ' ' + ${user.lastName}">Your Name</h5>
+                    <small class="text-muted mb-3" th:text="${user.username}">Your Username</small><br>
                     <a th:href="${user.role == 'admin' ? '/admin' : '/profile'}"
-                       class="btn btn-primary btn-sm"
+                       class="btn btn-primary btn-sm mt-2"
                        th:text="${user.role == 'admin' ? 'View Admin Board' : 'View Profile'}">View Profile</a>
                 </div>
+
 
             </div>
             <div class="card mt-3">
@@ -227,7 +229,6 @@
                 <div>
                     <h5 class="mb-0">
                         <a href="#" class="text-dark fw-bold">${post.username}</a>
-                        <span class="text-muted">• You</span>
                     </h5>
                     <small class="text-muted">${post.basicInfo}</small><br>
                     <small class="text-muted">${formattedCreatedAt}<i class="bi bi-globe-americas"></i></small>

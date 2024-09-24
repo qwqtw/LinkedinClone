@@ -4,11 +4,16 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.example.linkedinclone.entity.User;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 // This class enables Spring Security to understand how to retrieve and verify user credentials during the login process
+@Data
+@NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
 
     private User user;
@@ -28,9 +33,18 @@ public class CustomUserDetails implements UserDetails {
         return user;
     }
 
+    public String getFullName() {
+        return user.getFirstName() + " " + user.getLastName();
+    }
+
     @Override
     public String getPassword() {
         return user.getPassword();
+    }
+
+
+    public void setPassword(String password) {
+        user.setPassword(password);
     }
 
     @Override
@@ -38,6 +52,9 @@ public class CustomUserDetails implements UserDetails {
         return user.getUsername();
     }
 
+    public void setUsername(String username) {
+        user.setUsername(username);
+    }
     @Override
     public boolean isAccountNonExpired() {
         return true;
