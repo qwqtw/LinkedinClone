@@ -75,39 +75,46 @@ public class JobController {
         return "jobDetail";
     }
 
-    // Handle job application form submission
-    @PostMapping("/jobs/apply/{id}")
-    public String applyForJob(@PathVariable Long id, MultipartFile resume) {
-        // Directory to store uploaded files
-        String uploadDir = "uploads/";
-        File dir = new File(uploadDir);
-        // If the directory doesn't exist, attempt to create it
-        if (!dir.exists()) {
-            boolean created = dir.mkdir();
-            if (!created) {
-                // Log an error if the directory cannot be created and redirect to the job list page
-                log.error("Failed to create upload directory: {}", uploadDir);
-                return "redirect:/jobs";
-            }
-        }
+        // Handle job application form submission
+    // Define the directory to save uploaded resumes
+    private static final Logger logger = LoggerFactory.getLogger(JobController.class);
+    private static final String UPLOAD_DIR = "uploads/";
 
-        // Get the uploaded resume's file name
-        String fileName = resume.getOriginalFilename();
-        if (fileName == null) {
-            // Log an error if the file name is null, redirect to jobs page
-            log.error("Uploaded file name is null for job ID: {}", id);
+    @PostMapping("/jobs/apply")
+    public String applyForJob(@RequestParam("resume") MultipartFile resume,
+                              @RequestParam("jobId") Long jobId,
+                              RedirectAttributes redirectAttributes) {
+        // Log the incoming job application request
+        logger.info("Received job application for job ID: {}", jobId);
+
+        if (resume.isEmpty()) {
+            logger.warn("No file uploaded for job application with job ID: {}", jobId);
+            redirectAttributes.addFlashAttribute("message", "Please select a file to upload.");
             return "redirect:/jobs";
         }
 
-        // Save the uploaded file in the specified directory
-        File uploadedFile = new File(dir, fileName);
-        try {// Transfer the uploaded file to the server
-            resume.transferTo(uploadedFile);
-            // Additional application logic, such as saving the job application to the database, can go here
+        try {
+            Path uploadPath = Paths.get(UPLOAD_DIR);
+            System.out.println("Saving file to: " + uploadPath.toAbsolutePath());
+            // Ensure the uploads directory exists
+            if (!Files.exists(uploadPath)) {
+                Files.createDirectories(uploadPath);
+            }
+            // Save the file to the target location
+            byte[] bytes = resume.getBytes();
+            Path path = uploadPath.resolve(Objects.requireNonNull(resume.getOriginalFilename()));
+            Files.write(path, bytes);
+
+            // Log the success of file upload
+            logger.info("File uploaded successfully for job ID: {} - File: {}", jobId, resume.getOriginalFilename());
+
+            redirectAttributes.addFlashAttribute("message", "You successfully applied for the job!");
         } catch (IOException e) {
-            // Log any file transfer errors and handle the exception (e.g., redirect to an error page)
-            log.error("File upload error for job ID: {} - {}", id, e.getMessage());
+            // Log the error with stack trace
+            logger.error("Error occurred while uploading file for job ID: {}", jobId, e);
+            redirectAttributes.addFlashAttribute("message", "File upload failed.");
         }
+
         return "redirect:/jobs";
     }
 }
