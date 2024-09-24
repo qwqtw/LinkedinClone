@@ -1,5 +1,6 @@
 package com.example.linkedinclone.service;
 
+import com.example.linkedinclone.dto.UserSettingsDto;
 import com.example.linkedinclone.entity.Post;
 import com.example.linkedinclone.entity.User;
 import com.example.linkedinclone.repository.CommentRepository;
@@ -90,6 +91,36 @@ public class UserService {
         return userRepository.findAll(); // Adjust if your repository has a different method
     }
 
+
+    @Transactional
+    public boolean updateUserSettings(String currentUsername, UserSettingsDto userSettingsDto) {
+        User user = userRepository.findByUsername(currentUsername);
+
+        if (user == null) {
+            return false; // User not found
+        }
+
+        // Update the username if it's different and available
+        if (!user.getUsername().equals(userSettingsDto.getUsername())) {
+            if (userRepository.existsByUsername(userSettingsDto.getUsername())) {
+                return false; // Username already taken
+            }
+            user.setUsername(userSettingsDto.getUsername());
+        }
+
+        // Update password only if provided and valid
+        if (userSettingsDto.getPassword() != null && !userSettingsDto.getPassword().isEmpty()
+                && userSettingsDto.getPassword().equals(userSettingsDto.getPassword2())) {
+            user.setPassword(passwordEncoder.encode(userSettingsDto.getPassword()));
+        }
+
+        userRepository.save(user);
+        return true;
+    }
+
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
 
 
 

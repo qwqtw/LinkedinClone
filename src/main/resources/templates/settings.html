@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/head :: head('Settings')"></head>
+
+<body class="d-flex align-items-center justify-content-center">
+
+<div class="container mt-4">
+    <h2>User Settings</h2>
+    <form th:action="@{/settings}" method="post" th:object="${userSettingsDto}">
+        <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" name="username" th:field="*{username}" required>
+            <div th:if="${#fields.hasErrors('username')}" class="text-danger">
+                <p th:errors="*{username}">Username Error</p>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password" class="form-label">Password (Optional)</label>
+            <input type="password" class="form-control" id="password" name="password" th:field="*{password}">
+            <div th:if="${#fields.hasErrors('password')}" class="text-danger">
+                <p th:errors="*{password}">Password Error</p>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <label for="password2" class="form-label">Confirm Password (Optional)</label>
+            <input type="password" class="form-control" id="password2" name="password2" th:field="*{password2}">
+            <div th:if="${#fields.hasErrors('password2')}" class="text-danger">
+                <p th:errors="*{password2}">Confirm Password Error</p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+    </form>
+
+    <!-- Display alert messages -->
+    <div th:if="${message}" class="alert alert-info mt-4" role="alert">
+        <span th:text="${message}"></span>
+    </div>
+    <div>
+        <p>Return to <a th:href="@{/home}">Home</a></p>
+    </div>
+</div>
+
+
+</body>
+</html>

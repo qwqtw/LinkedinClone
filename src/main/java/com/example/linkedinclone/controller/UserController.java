@@ -31,16 +31,17 @@ public class UserController {
     @Autowired
     private UserRepository userRepo;
 
-    @GetMapping("/login")
-    public String login() {
-        return "login"; // This should match the name of your login template
-    }
-
     @Autowired
     private UserService userService;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @GetMapping("/login")
+    public String login(Model model, RedirectAttributes redirectAttributes) {
+        model.addAttribute("user", new User());
+        return "login"; // This should match the name of your login template
+    }
 
 
     @PostMapping("/login")
@@ -92,7 +93,7 @@ public class UserController {
 
             userRepo.save(user);
 
-            return "login";
+            return "redirect:/login";
         }
 
     @PostMapping("/deleteAccount")
@@ -103,52 +104,7 @@ public class UserController {
         return "redirect:/login"; // Redirect to login or home page
     }
 
-    @PostMapping("/changeUsername")
-    @ResponseBody // This will make it return JSON
-    public ResponseEntity<Map<String, String>> changeUsername(@RequestParam String newUsername, Principal principal) {
-        String currentUsername = principal.getName();
-        User user = userService.findByUsername(currentUsername);
-        Map<String, String> response = new HashMap<>();
 
-        if (user == null) {
-            response.put("errorMessage", "User not found.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        if (userService.findByUsername(newUsername) != null) {
-            response.put("errorMessage", "Username already exists.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        user.setUsername(newUsername);
-        userService.save(user); // Ensure this method exists
-
-        response.put("successMessage", "Username changed successfully.");
-        return ResponseEntity.ok(response);
-    }
-
-
-    @PostMapping("/changePassword")
-    @ResponseBody // This will make it return JSON
-    public ResponseEntity<Map<String, String>> changePassword(@RequestParam String newPassword, @RequestParam String confirmPassword, Principal principal) {
-        User user = userService.findByUsername(principal.getName());
-        Map<String, String> response = new HashMap<>();
-
-        if (user == null) {
-            response.put("errorMessage", "User not found.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        if (!newPassword.equals(confirmPassword)) {
-            response.put("errorMessage", "Passwords do not match.");
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        user.setPassword(passwordEncoder.encode(newPassword));
-        userRepo.save(user);
-        response.put("successMessage", "Password changed successfully.");
-        return ResponseEntity.ok(response);
-    }
 
 
 

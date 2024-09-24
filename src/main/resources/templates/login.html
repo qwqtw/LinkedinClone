@@ -8,11 +8,7 @@
 
         <!-- Display error message if present -->
         <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
-        <!-- Success Message -->
-        <div th:if="${successMessage}" class="alert alert-success" role="alert" th:text="${successMessage}"></div>
 
-        <!-- Error Message -->
-        <div th:if="${errorMessage}" class="alert alert-danger" role="alert" th:text="${errorMessage}"></div>
 
 
         <div class="form-group mb-3">
@@ -34,18 +30,6 @@
         </div>
     </form>
 </div>
-<script>
-    window.onload = function() {
-        const successMessage = /*[[${successMessage}]]*/ null;
-        const errorMessage = /*[[${errorMessage}]]*/ null;
 
-        if (successMessage) {
-            alert(successMessage);
-        }
-        if (errorMessage) {
-            alert(errorMessage);
-        }
-    }
-</script>
 </body>
 </html>
