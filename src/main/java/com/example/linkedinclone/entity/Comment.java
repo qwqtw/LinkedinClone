@@ -15,7 +15,10 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long postId;  // Or reference a Post entity
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postId", nullable = false)
+    private Post post;
+
 
     private String username;  // Store username directly
 
