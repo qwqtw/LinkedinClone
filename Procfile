@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar target/linkedin-clone-2.jar
+web: java -Dserver.port=$PORT -jar target/LinkedinClone-0.0.1-SNAPSHOT.jar
